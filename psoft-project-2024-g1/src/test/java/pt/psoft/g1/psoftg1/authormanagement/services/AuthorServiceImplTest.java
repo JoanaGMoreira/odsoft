@@ -33,12 +33,12 @@ public class AuthorServiceImplTest {
     @BeforeEach
     public void setUp() {
         authors = new ArrayList<>();
-        
+
         // Criação de autores com nomes e biografias
         Author alex = new Author("Alex", "O Alex escreveu livros", null);
-        //alex.setId(1L);  // Definindo um ID fictício
+        // alex.setId(1L); // Definindo um ID fictício
         Author john = new Author("John", "John é um autor", null);
-        //john.setId(2L);  // Definindo um ID fictício
+        // john.setId(2L); // Definindo um ID fictício
 
         // Adiciona os autores à lista
         authors.add(alex);
@@ -50,8 +50,8 @@ public class AuthorServiceImplTest {
                 .thenAnswer(invocation -> {
                     Long id = invocation.getArgument(0);
                     return authors.stream()
-                                  .filter(a -> a.getId() != null && a.getId().equals(id))
-                                  .findFirst();
+                            .filter(a -> a.getId() != null && a.getId().equals(id))
+                            .findFirst();
                 });
         Mockito.when(authorRepository.save(any(Author.class))).thenAnswer(invocation -> {
             Author savedAuthor = invocation.getArgument(0);
@@ -82,8 +82,9 @@ public class AuthorServiceImplTest {
 
     @Test
     public void whenCreateAuthor_thenAuthorShouldBeSaved() {
-        CreateAuthorRequest createAuthorRequest = new CreateAuthorRequest("New Author", "Descrição do Novo Autor", null, null);
-        
+        CreateAuthorRequest createAuthorRequest = new CreateAuthorRequest("New Author", "Descrição do Novo Autor", null,
+                null);
+
         // Mock do repositório para criar o autor
         Author newAuthor = new Author("New Author", "Descrição do Novo Autor", null);
         Mockito.when(authorRepository.save(any(Author.class))).thenReturn(newAuthor);
@@ -100,7 +101,7 @@ public class AuthorServiceImplTest {
         UpdateAuthorRequest updateRequest = new UpdateAuthorRequest();
         updateRequest.setName("Alex Updated");
         updateRequest.setBio("Atualização da descrição");
-        
+
         // Mock do repositório para atualização
         Mockito.when(authorRepository.findByAuthorNumber(id)).thenReturn(Optional.of(authors.get(0)));
 

@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Based on https://www.baeldung.com/spring-boot-testing
- * <p>Adaptations to Junit 5 with ChatGPT
+ * <p>
+ * Adaptations to Junit 5 with ChatGPT
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -53,7 +54,7 @@ public class AuthorRepositoryIntegrationTest {
 
         // when
         List<Author> authors = StreamSupport.stream(authorRepository.findAll().spliterator(), false)
-                                           .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         // then
         assertThat(authors).hasSize(2).extracting(Author::getName).containsExactlyInAnyOrder("Alex", "John");
@@ -72,7 +73,7 @@ public class AuthorRepositoryIntegrationTest {
 
         // then
         List<Author> authors = StreamSupport.stream(authorRepository.findAll().spliterator(), false)
-                                           .collect(Collectors.toList());
+                .collect(Collectors.toList());
         assertThat(authors).isEmpty();
     }
 
@@ -90,4 +91,3 @@ public class AuthorRepositoryIntegrationTest {
         assertThat(list).isEmpty();
     }
 }
-
