@@ -66,5 +66,80 @@ class TitleTest {
         title.setTitle("Some other title");
         assertEquals("Some other title", title.toString());
     }
+    @Test
+    void ensureTitleIsSetCorrectly() {
+        //Verificaque o título é definido corretamente
+        Title title = new Title("Some Title");
+        assertEquals("Some Title", title.toString());
+    }
+
+    @Test
+    void ensureTitleCanBeChanged() {
+        //Verifica que o título pode ser alterado
+        Title title = new Title("Original Title");
+        title.setTitle("Changed Title");
+        assertEquals("Changed Title", title.toString());
+    }
+
+    @Test
+    void ensureTitleCannotBeSetToNull() {
+        //Verifica que não é possível definir o título como nulo
+        Title title = new Title("Initial Title");
+        assertThrows(IllegalArgumentException.class, () -> title.setTitle(null));
+    }
+
+    @Test
+    void ensureTitleCannotBeSetToBlank() {
+        //Verificaque não é possível definir o título como em branco
+        Title title = new Title("Initial Title");
+        assertThrows(IllegalArgumentException.class, () -> title.setTitle(""));
+    }
+
+    @Test
+    void ensureTitleCannotBeSetToOversize() {
+        //Verifica que não é possível definir um título muito longo
+        Title title = new Title("Initial Title");
+        String longTitle = "A".repeat(129); // 129 caracteres
+        assertThrows(IllegalArgumentException.class, () -> title.setTitle(longTitle));
+    }
+
+    @Test
+    void ensureTitleIsTrimmedWhenSet() {
+        //Verifica que espaços em branco são removidos ao definir
+        Title title = new Title(" Initial Title ");
+        title.setTitle("   New Title   ");
+        assertEquals("New Title", title.toString());
+    }
+
+   /* @Test
+    void ensureValidTitleIsAccepted() {
+        assertDoesNotThrow(() -> new Title("Valid Title"));
+    }
+*/
+    @Test
+    void ensureNullTitleThrowsError() {
+        // Verifica que um título nulo lança exceção
+        assertThrows(IllegalArgumentException.class, () -> new Title(null));
+    }
+
+    @Test
+    void ensureBlankTitleThrowsError() {
+        //Verifica que um título em branco lança exceção
+        assertThrows(IllegalArgumentException.class, () -> new Title(""));
+    }
+
+    @Test
+    void ensureOversizeTitleThrowsError() {
+        //Verificaque um título muito longo lança exceção
+        String longTitle = "A".repeat(129); // 129 caracteres
+        assertThrows(IllegalArgumentException.class, () -> new Title(longTitle));
+    }
+
+    @Test
+    void ensureTitleIsTrimmed() {
+        //Verifica que espaços em branco são removidos
+        Title title = new Title("  Title With Spaces  ");
+        assertEquals("Title With Spaces", title.toString());
+    }
 
 }

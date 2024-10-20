@@ -59,6 +59,8 @@ public class AuthorServiceImplTest {
         });
     }
 
+    // Testes Funcionais de Caixa Transparente (já existentes)
+
     @Test
     public void whenValidId_thenAuthorShouldBeFound() {
         Long id = 1L;
@@ -122,4 +124,68 @@ public class AuthorServiceImplTest {
 
         assertThat(author.getPhoto()).isNull(); // Verifica se a foto foi removida
     }
+
+    // Testes Funcionais de Caixa Opaca
+
+    @Test
+    public void givenAuthor_whenFindByAuthorNumber_thenReturnCorrectAuthor() {
+        // Dado um autor Alex, simulado no setUp()
+        Long authorNumber = 1L;
+
+        // Quando o número do autor é buscado pelo serviço
+        Optional<Author> foundAuthor = authorService.findByAuthorNumber(authorNumber);
+
+        // Então deve retornar o autor Alex (caixa opaca: foco no comportamento)
+        assertThat(foundAuthor).isPresent();
+        assertThat(foundAuthor.get().getName()).isEqualTo("Alex");
+    }
+
+    @Test
+    public void givenNewAuthor_whenCreate_thenAuthorIsSavedSuccessfully() {
+        // Dado um novo autor a ser criado
+        CreateAuthorRequest request = new CreateAuthorRequest("AuthorX", "Descrição do AutorX", null, null);
+
+        // Simula o retorno do repositório para salvar
+        Author savedAuthor = new Author("AuthorX", "Descrição do AutorX", null);
+        Mockito.when(authorRepository.save(any(Author.class))).thenReturn(savedAuthor);
+
+        // Quando o autor é criado pelo serviço
+        Author createdAuthor = authorService.create(request);
+
+        // Então deve retornar o novo autor criado corretamente
+        assertThat(createdAuthor.getName()).isEqualTo("AuthorX");
+    }
+
+    @Test
+    public void givenNonExistentAuthor_whenFindByAuthorNumber_thenReturnEmpty() {
+        // Dado um ID de autor inexistente
+        Long nonExistentAuthorNumber = 999L;
+
+        // Quando o serviço busca por esse ID
+        Optional<Author> foundAuthor = authorService.findByAuthorNumber(nonExistentAuthorNumber);
+
+        // Então deve retornar vazio
+        assertThat(foundAuthor).isNotPresent();
+    }
+
+    @Test
+    public void givenValidAuthor_whenUpdateAuthor_thenAuthorIsUpdatedSuccessfully() {
+        // Dado um autor existente e uma requisição de atualização parcial
+        Long authorId = 1L;
+        UpdateAuthorRequest updateRequest = new UpdateAuthorRequest();
+        updateRequest.setName("Updated Name");
+        updateRequest.setBio("Updated Bio");
+
+        // Simula o comportamento do repositório para encontrar o autor e salvar a atualização
+        Author existingAuthor = authors.get(0);
+        Mockito.when(authorRepository.findByAuthorNumber(authorId)).thenReturn(Optional.of(existingAuthor));
+
+        // Quando o serviço faz a atualização
+        Author updatedAuthor = authorService.partialUpdate(authorId, updateRequest, existingAuthor.getVersion());
+
+        // Então o autor deve ter sido atualizado corretamente
+        assertThat(updatedAuthor.getName()).isEqualTo("Updated Name");
+        assertThat(updatedAuthor.getBio()).isEqualTo("Updated Bio");
+    }
 }
+

@@ -1,7 +1,6 @@
 package pt.psoft.g1.psoftg1.bookmanagement.model;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class IsbnTest {
@@ -15,7 +14,6 @@ class IsbnTest {
     void ensureIsbnMustNotBeBlank() {
         assertThrows(IllegalArgumentException.class, () -> new Isbn(""));
     }
-
 
     /**
      * Text from <a href="https://www.lipsum.com/">Lorem Ipsum</a> generator.
@@ -61,5 +59,55 @@ class IsbnTest {
     @Test
     void ensureChecksum10IsCorrect() {
         assertThrows(IllegalArgumentException.class, () -> new Isbn("8175257667"));
+    }
+
+    // ---------------------- Testes Caixa Opaca ----------------------
+    @Test
+    void ensureValidIsbn13IsAccepted() {
+        //Verifica se um ISBN-13 válido é aceito
+        assertDoesNotThrow(() -> new Isbn("9782826012092"));
+    }
+
+    @Test
+    void ensureInvalidIsbn13ThrowsError() {
+        //Verifica se um ISBN-13 inválido lança exceção
+        assertThrows(IllegalArgumentException.class, () -> new Isbn("9782826012093")); // Exemplo de ISBN-13 inválido
+    }
+
+    @Test
+    void ensureValidIsbn10IsAccepted() {
+        //Verifica se um ISBN-10 válido é aceito
+        assertDoesNotThrow(() -> new Isbn("8175257660"));
+    }
+
+    @Test
+    void ensureInvalidIsbn10ThrowsError() {
+        //Verifica se um ISBN-10 inválido lança exceção
+        assertThrows(IllegalArgumentException.class, () -> new Isbn("8175257667")); // Exemplo de ISBN-10 inválido
+    }
+
+// ---------------------- Testes Transparentes ----------------------
+
+    @Test
+    void ensureIsbnStateIsCorrectAfterConstruction() {
+        //Verifica que o estado do objeto ISBN está correto após a construção
+        Isbn isbn = new Isbn("9782826012092");
+        assertEquals("9782826012092", isbn.toString());
+    }
+
+    @Test
+    void ensureIsbn10ChecksumIsCorrect() {
+        //Verifica se a verificação do checksum de um ISBN-10 é correta
+        Isbn validIsbn10 = new Isbn("8175257660");
+        assertEquals("8175257660", validIsbn10.toString());
+        assertThrows(IllegalArgumentException.class, () -> new Isbn("8175257667")); // ISBN-10 inválido
+    }
+
+    @Test
+    void ensureIsbn13ChecksumIsCorrect() {
+        //Verifica se a verificação do checksum de um ISBN-13 é correta
+        Isbn validIsbn13 = new Isbn("9782826012092");
+        assertEquals("9782826012092", validIsbn13.toString());
+        assertThrows(IllegalArgumentException.class, () -> new Isbn("9782826012099")); // ISBN-13 inválido
     }
 }
