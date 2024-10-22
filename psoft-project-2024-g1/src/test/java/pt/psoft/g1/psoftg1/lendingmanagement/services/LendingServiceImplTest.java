@@ -72,7 +72,7 @@ class LendingServiceImplTest {
                 null);
         bookRepository.save(book);
 
-        reader = Reader.newReader("manuel@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
+        reader = Reader.newReader("manuel1@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
         userRepository.save(reader);
 
         readerDetails = new ReaderDetails(1,

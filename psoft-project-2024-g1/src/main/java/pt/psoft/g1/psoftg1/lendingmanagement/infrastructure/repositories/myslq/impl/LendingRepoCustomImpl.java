@@ -1,86 +1,18 @@
-package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.impl;
+package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.myslq.impl;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
-import pt.psoft.g1.psoftg1.genremanagement.services.GenreLendingsDTO;
-import pt.psoft.g1.psoftg1.genremanagement.services.GenreLendingsPerMonthDTO;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
-import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
-import pt.psoft.g1.psoftg1.readermanagement.services.ReaderAverageDto;
-import pt.psoft.g1.psoftg1.readermanagement.services.ReaderLendingsAvgPerMonthDto;
 import pt.psoft.g1.psoftg1.shared.services.Page;
-import pt.psoft.g1.psoftg1.usermanagement.model.User;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
-public interface SpringDataLendingRepository extends LendingRepository, LendingRepoCustom, CrudRepository<Lending, Long> {
-    @Override
-    @Query("SELECT l " +
-            "FROM Lending l " +
-            "WHERE l.lendingNumber.lendingNumber = :lendingNumber")
-    Optional<Lending> findByLendingNumber(String lendingNumber);
-
-    //http://www.h2database.com/html/commands.html
-
-    @Override
-    @Query("SELECT l " +
-            "FROM Lending l " +
-            "JOIN Book b ON l.book.pk = b.pk " +
-            "JOIN ReaderDetails r ON l.readerDetails.pk = r.pk " +
-            "WHERE b.isbn.isbn = :isbn " +
-            "AND r.readerNumber.readerNumber = :readerNumber ")
-    List<Lending> listByReaderNumberAndIsbn(String readerNumber, String isbn);
-
-    @Override
-    @Query("SELECT COUNT (l) " +
-            "FROM Lending l " +
-            "WHERE YEAR(l.startDate) = YEAR(CURRENT_DATE)")
-    int getCountFromCurrentYear();
-
-    @Override
-    @Query("SELECT l " +
-            "FROM Lending l " +
-                "JOIN ReaderDetails r ON l.readerDetails.pk = r.pk " +
-            "WHERE r.readerNumber.readerNumber = :readerNumber " +
-                "AND l.returnedDate IS NULL")
-    List<Lending> listOutstandingByReaderNumber(@Param("readerNumber") String readerNumber);
-
-    @Override
-    @Query(value =
-            "SELECT AVG(DATEDIFF(day, l.start_date, l.returned_date)) " +
-            "FROM Lending l"
-            , nativeQuery = true)
-    Double getAverageDuration();
-
-    @Override
-    @Query(value =
-            "SELECT AVG(DATEDIFF(day, l.start_date, l.returned_date)) " +
-                    "FROM Lending l " +
-                    "JOIN BOOK b ON l.BOOK_PK = b.PK " +
-                    "WHERE b.ISBN = :isbn"
-            , nativeQuery = true)
-    Double getAvgLendingDurationByIsbn(@Param("isbn") String isbn);
-
-
-}
-
-interface LendingRepoCustom {
-    List<Lending> getOverdue(Page page);
-    List<Lending> searchLendings(Page page, String readerNumber, String isbn, Boolean returned, LocalDate startDate, LocalDate endDate);
-//    List<ReaderAverageDto> getAverageMonthlyPerReader(LocalDate startDate, LocalDate endDate);
-
-}
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 class LendingRepoCustomImpl implements LendingRepoCustom {
@@ -89,8 +21,7 @@ class LendingRepoCustomImpl implements LendingRepoCustom {
     private final EntityManager em;
 
     @Override
-    public List<Lending> getOverdue(Page page)
-    {
+    public List<Lending> getOverdue(Page page) {
 
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Lending> cq = cb.createQuery(Lending.class);
@@ -113,7 +44,7 @@ class LendingRepoCustomImpl implements LendingRepoCustom {
         return q.getResultList();
     }
 
-    public List<Lending> searchLendings(Page page, String readerNumber, String isbn, Boolean returned, LocalDate startDate, LocalDate endDate){
+    public List<Lending> searchLendings(Page page, String readerNumber, String isbn, Boolean returned, LocalDate startDate, LocalDate endDate) {
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Lending> cq = cb.createQuery(Lending.class);
         final Root<Lending> lendingRoot = cq.from(Lending.class);
@@ -127,16 +58,16 @@ class LendingRepoCustomImpl implements LendingRepoCustom {
             where.add(cb.like(readerDetailsJoin.get("readerNumber").get("readerNumber"), readerNumber));
         if (StringUtils.hasText(isbn))
             where.add(cb.like(bookJoin.get("isbn").get("isbn"), isbn));
-        if (returned != null){
-            if(returned){
+        if (returned != null) {
+            if (returned) {
                 where.add(cb.isNotNull(lendingRoot.get("returnedDate")));
-            }else{
+            } else {
                 where.add(cb.isNull(lendingRoot.get("returnedDate")));
             }
         }
-        if(startDate!=null)
+        if (startDate != null)
             where.add(cb.greaterThanOrEqualTo(lendingRoot.get("startDate"), startDate));
-        if(endDate!=null)
+        if (endDate != null)
             where.add(cb.lessThanOrEqualTo(lendingRoot.get("startDate"), endDate));
 
         cq.where(where.toArray(new Predicate[0]));

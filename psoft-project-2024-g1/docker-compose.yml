@@ -1,0 +1,37 @@
+services:
+  mysql:
+    image: mysql:8.4
+    command: --mysql-native-password=ON
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=library
+      - MYSQL_PASSWORD=library
+      - MYSQL_DATABASE=library
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"
+    profiles:
+      - mysql
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    profiles:
+      - redis
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=MongoDB2019!
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./conf.d:/etc/mongodb/conf.d:ro"

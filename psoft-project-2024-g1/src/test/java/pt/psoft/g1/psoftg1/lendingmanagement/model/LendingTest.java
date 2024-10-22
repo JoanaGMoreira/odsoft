@@ -39,7 +39,7 @@ class LendingTest {
                 authors,
                 null);
         readerDetails = new ReaderDetails(1,
-                Reader.newReader("manuel@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives"),
+                Reader.newReader("manuel1@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives"),
                 "2000-01-01",
                 "919191919",
                 true,

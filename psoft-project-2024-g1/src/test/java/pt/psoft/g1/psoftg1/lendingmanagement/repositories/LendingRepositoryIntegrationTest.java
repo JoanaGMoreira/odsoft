@@ -27,6 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @Transactional
 @SpringBootTest
 public class LendingRepositoryIntegrationTest {
@@ -70,7 +71,7 @@ public class LendingRepositoryIntegrationTest {
                 null);
         bookRepository.save(book);
 
-        reader = Reader.newReader("manuel@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
+        reader = Reader.newReader("manuel1@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
         userRepository.save(reader);
 
         readerDetails = new ReaderDetails(1,

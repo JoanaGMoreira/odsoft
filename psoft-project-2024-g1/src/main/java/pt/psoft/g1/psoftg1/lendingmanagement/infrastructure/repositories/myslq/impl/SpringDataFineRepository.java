@@ -1,13 +1,16 @@
-package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.impl;
+package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.myslq.impl;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Fine;
 import pt.psoft.g1.psoftg1.lendingmanagement.repositories.FineRepository;
 
 import java.util.Optional;
 
-
+@Repository
+@Profile("mysql")
 public interface SpringDataFineRepository extends FineRepository, CrudRepository<Fine, Long> {
 
     @Override
