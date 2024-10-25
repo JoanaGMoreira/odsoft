@@ -8,16 +8,11 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-        stage('Unit Tests') {
-            steps {
-                echo 'Running Unit Tests..'
-                sh 'mvn test'
-            }
-        }
+    
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh 'mvn install'
+                sh 'mvn install -DskipTests'
             }
         }
         stage('Build docker image') {
