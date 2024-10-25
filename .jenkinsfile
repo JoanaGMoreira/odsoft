@@ -1,18 +1,29 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Clean') {
-            steps {
-                echo 'Cleaning /target..'
-                sh 'mvn clean'
-            }
-        }
-    
+//     stages {
+//         stage('Clean') {
+//             steps {
+//                 echo 'Cleaning /target..'
+//                 sh 'mvn clean'
+//             }
+//         }
+//         stage('Unit Tests') {
+//             steps {
+//                 echo 'Running Unit Tests..'
+//                 sh 'mvn test'
+//             }
+//         }
+//         stage('Deploy') {
+//             steps {
+//                 echo 'Deploying....'
+//                 sh 'mvn install'
+//             }
+//         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh 'mvn install -DskipTests'
+                sh 'echo $USER.'
             }
         }
         stage('Build docker image') {
