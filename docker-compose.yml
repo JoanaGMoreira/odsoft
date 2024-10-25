@@ -1,0 +1,13 @@
+services:
+  lms:
+    image: lms:latest
+    build: .
+    container_name: lms-app
+    ports:
+      - "8082:8082"
+    networks:
+      - lms-network
+    restart: unless-stopped
+networks:
+  lms-network:
+    driver: bridge

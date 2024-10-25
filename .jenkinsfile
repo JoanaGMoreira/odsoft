@@ -8,6 +8,29 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-
+        stage('Unit Tests') {
+            steps {
+                echo 'Running Unit Tests..'
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh 'mvn install'
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                echo 'Building docker image....'
+                sh 'docker build -t lms .'
+            }
+        }
+        stage('Build docker container') {
+            steps {
+                echo 'Building docker container....'
+                sh 'docker-compose up -d'
+            }
+        }
     }
 }
