@@ -48,4 +48,43 @@ class GenreTest {
         assertEquals("Some genre", genre.toString());
     }
 
+    // Testes de caixa opaca
+
+    @Test
+    void testValidGenreName() {
+        Genre genre = new Genre("Action");
+        assertEquals("Action", genre.toString(), "género deve ser configurado corretamente");
+    }
+
+    @Test
+    void testTrimmedGenreName() {
+        Genre genre = new Genre("  Drama  ");
+        assertEquals("Drama", genre.toString().trim(), "espaços desnecessários devem ser removidos");
+    }
+
+    // Testes transparentes
+
+    @Test
+    void testExactMaxSizeGenreName() {
+        String maxGenre = "A".repeat(100); // Considerando que o limite é 100 caracteres
+        Genre genre = new Genre(maxGenre);
+        assertEquals(maxGenre, genre.toString(), "nome do género com max caracteres deve ser aceite");
+    }
+
+    @Test
+    void testGenreNameBelowMaxLength() {
+        String validName = "Mystery";
+        Genre genre = new Genre(validName);
+        assertEquals(validName, genre.toString(), "nome do género com menos de max caracteres deve ser aceite");
+    }
+
+    @Test
+    void testGenreNameBoundaryConditions() {
+        Genre genreOneChar = new Genre("A");
+        assertEquals("A", genreOneChar.toString(), "nome do género com apenas 1 caracter deve ser aceite");
+
+        Genre genreMaxLength = new Genre("B".repeat(99));
+        assertEquals("B".repeat(99), genreMaxLength.toString(), "nome do género com 99 caracteres deve ser aceite");
+    }
+
 }

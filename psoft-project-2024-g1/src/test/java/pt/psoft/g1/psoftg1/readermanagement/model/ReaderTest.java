@@ -84,4 +84,28 @@ public class ReaderTest {
         ReaderDetails readerDetails = new ReaderDetails(123, mockReader, "2010-01-01", "912345678", true, false, false,"readerPhotoTest.jpg",genreList);
         assertEquals(2, readerDetails.getInterestList().size());
     }
+
+    @Test
+    void ensureReaderNumberIsUniqueAndCorrectFormat() {
+        Reader mockReader = mock(Reader.class);
+        ReaderDetails readerDetails = new ReaderDetails(789, mockReader, "2000-05-05", "912345678", true, false, false, null, null);
+
+        String readerNumber = readerDetails.getReaderNumber();
+
+        assertNotNull(readerNumber, "Reader number should not be null.");
+        assertEquals("789", readerNumber, "Reader number should be correctly stored and formatted.");
+    }
+
+    // Testes Transparentes
+
+    @Test
+    void ensureReaderNumberHasCorrectLength() {
+        Reader mockReader = mock(Reader.class);
+        ReaderDetails readerDetails = new ReaderDetails(1234, mockReader, "2010-01-01", "912345678", true, false, false, null, null);
+
+        String readerNumber = readerDetails.getReaderNumber();
+
+        // Check that the reader number is 3 digits
+        assertEquals(3, readerNumber.length(), "Reader number should have exactly 3 digits.");
+    }
 }

@@ -33,4 +33,33 @@ public class PhoneNumberTest {
         PhoneNumber anotherPhoneNumber = new PhoneNumber("212345678");
         assertEquals("212345678", anotherPhoneNumber.toString());
     }
+
+    // Testes transparentes
+    @Test
+    void ensureSetPhoneNumberCorrectlyValidatesStartDigitAndLength() {
+        PhoneNumber validPhoneNumber1 = new PhoneNumber("912345678");
+        assertEquals("912345678", validPhoneNumber1.toString());
+
+        PhoneNumber validPhoneNumber2 = new PhoneNumber("212345678");
+        assertEquals("212345678", validPhoneNumber2.toString());
+
+
+        assertThrows(IllegalArgumentException.class, () -> new PhoneNumber("312345678"));
+
+        assertThrows(IllegalArgumentException.class, () -> new PhoneNumber("9123456"));
+        assertThrows(IllegalArgumentException.class, () -> new PhoneNumber("9123456789"));
+    }
+
+
+    @Test
+    void ensureBoundaryValuesAreHandledCorrectly() {
+        assertDoesNotThrow(() -> new PhoneNumber("900000000")); // Caso válido mínimo para 9
+        assertDoesNotThrow(() -> new PhoneNumber("299999999")); // Caso válido máximo para 2
+    }
+
+
+    @Test
+    void ensurePhoneNumberRejectsAlphaNumericInput() {
+        assertThrows(IllegalArgumentException.class, () -> new PhoneNumber("91a456b78"));
+    }
 }
