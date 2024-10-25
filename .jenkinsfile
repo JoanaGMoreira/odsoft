@@ -20,12 +20,6 @@ pipeline {
 //                 sh 'mvn install'
 //             }
 //         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                sh 'echo $USER.'
-            }
-        }
         stage('Build docker image') {
             steps {
                 echo 'Building docker image....'
