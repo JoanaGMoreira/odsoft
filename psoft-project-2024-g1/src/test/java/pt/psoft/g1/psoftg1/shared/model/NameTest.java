@@ -41,4 +41,34 @@ class NameTest {
         name.setName("Some other name");
         assertEquals("Some other name", name.toString());
     }
+
+
+    @Test
+    void ensureProtectedConstructorForORMOnly() {
+        Name name = new Name(); // Não deve lançar nenhuma exceção pois é usado apenas pelo ORM
+        assertNull(name.getName()); // Verifica se o nome é nulo até ser definido
+    }
+
+
+    @Test
+    void ensureSetNameWithBoundaryLength() {
+        String validName = "a".repeat(150); // Gera uma string com exatamente 150 caracteres
+        final var name = new Name(validName);
+        assertEquals(validName, name.toString());
+    }
+
+
+    @Test
+    void ensureSetNameWithWhitespaceOrSpecialChars() {
+        assertThrows(IllegalArgumentException.class, () -> new Name("John Doe"), "Name can only contain alphanumeric characters");
+        assertThrows(IllegalArgumentException.class, () -> new Name("Maria_Silva"), "Name can only contain alphanumeric characters");
+    }
+
+
+    @Test
+    void ensureIsAlphanumericWorksCorrectly() {
+        assertTrue(StringUtilsCustom.isAlphanumeric("Ricardo123"));
+        assertFalse(StringUtilsCustom.isAlphanumeric("Ricardo!"));
+        assertFalse(StringUtilsCustom.isAlphanumeric(" "));
+    }
 }
