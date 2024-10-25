@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
  * @author  rmfranca*/
 @Getter
 @Entity
+@Document
 public class Fine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -3,8 +3,10 @@ package pt.psoft.g1.psoftg1.genremanagement.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Entity
+@Document
 @Table
 public class Genre {
     @Transient

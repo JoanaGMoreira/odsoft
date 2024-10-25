@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.data.mongodb.core.mapping.Document;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 
@@ -24,6 +25,7 @@ import java.util.Optional;
  * natural key ({@code LendingNumber}) with its own business rules.
  * @author  rmfranca*/
 @Entity
+@Document
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames={"LENDING_NUMBER"})})
 public class Lending {

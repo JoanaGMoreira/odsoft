@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.readermanagement.services.UpdateReaderRequest;
@@ -14,6 +15,7 @@ import java.nio.file.InvalidPathException;
 import java.util.List;
 
 @Entity
+@Document
 @Table(name = "READER_DETAILS")
 public class ReaderDetails extends EntityWithPhoto {
     @Id

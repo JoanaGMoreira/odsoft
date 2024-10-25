@@ -15,7 +15,8 @@ import java.util.Optional;
 
 @Repository
 @Profile("mongodb")
-public class MongoBdBookRepositoryImpl implements BookRepository {
+public class MongoBdBookRepositoryImpl implements  BookRepository{
+
 
     @Override
     public List<Book> findByGenre(String genre) {
