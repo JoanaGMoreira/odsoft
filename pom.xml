@@ -176,6 +176,10 @@
 						<param>pt.psoft.g1.psoftg1.lendingmanagement.model.*</param>
 						<param>pt.psoft.g1.psoftg1.readermanagement.model.*</param>
 					</targetTests>
+					<outputFormats>
+						<param>XML</param>
+						<param>HTML</param> <!-- Optional, keep it if you also want HTML -->
+					</outputFormats>
 				</configuration>
 				<dependencies>
 					<dependency>

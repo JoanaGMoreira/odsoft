@@ -14,6 +14,18 @@ pipeline {
                  sh 'mvn test'
              }
          }
+        stage('Mutation Tests') {
+             steps {
+                 echo 'Running Mutation Tests..'
+                 sh 'mvn org.pitest:pitest-maven:mutationCoverage'
+             }
+        }
+        stage('Integration Tests') {
+             steps {
+                 echo 'Running Integration Tests..'
+                 sh 'mvn verify'
+             }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
@@ -34,8 +46,11 @@ pipeline {
         }
     }
     post {
-            always {
-                junit(testResults: 'target/surefire-reports/*.xml', allowEmptyResults : true)
-            }
+        always {
+            // Archive JUnit test results
+            junit 'target/surefire-reports/*.xml'
+            junit '**/target/pit-reports/*.xml'
+            junit 'target/failsafe-reports/*.xml'
         }
+    }
 }

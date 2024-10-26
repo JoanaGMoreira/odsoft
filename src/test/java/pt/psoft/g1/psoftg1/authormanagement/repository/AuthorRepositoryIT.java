@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class AuthorRepositoryIntegrationTest {
+public class AuthorRepositoryIT {
 
     @Autowired
     private AuthorRepository authorRepository;
