@@ -8,12 +8,12 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-//         stage('Unit Tests') {
-//             steps {
-//                 echo 'Running Unit Tests..'
-//                 sh 'mvn test'
-//             }
-//         }
+         stage('Unit Tests') {
+             steps {
+                 echo 'Running Unit Tests..'
+                 sh 'mvn test'
+             }
+         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
@@ -33,4 +33,9 @@ pipeline {
             }
         }
     }
+    post {
+            always {
+                junit(testResults: 'target/surefire-reports/*.xml', allowEmptyResults : true)
+            }
+        }
 }
