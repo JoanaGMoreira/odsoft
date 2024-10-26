@@ -35,3 +35,15 @@ services:
       - "27017:27017"
     volumes:
       - "./conf.d:/etc/mongodb/conf.d:ro"
+  lms:
+    image: lms:latest
+    build: .
+    container_name: lms-app
+    ports:
+      - "2228:2228"
+    networks:
+      - lms-network
+    restart: unless-stopped
+networks:
+  lms-network:
+    driver: bridge
