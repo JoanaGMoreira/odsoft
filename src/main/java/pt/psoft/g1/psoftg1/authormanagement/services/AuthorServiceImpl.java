@@ -1,6 +1,6 @@
 package pt.psoft.g1.psoftg1.authormanagement.services;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final AuthorMapper mapper;
     private final PhotoRepository photoRepository;
 
+    @Autowired
+    public AuthorServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository, AuthorMapper mapper, PhotoRepository photoRepository) {
+        this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
+        this.mapper = mapper;
+        this.photoRepository = photoRepository;
+    }
+
     @Override
-    public Iterable<Author> findAll() {
+    public List<Author> findAll() {
         return authorRepository.findAll();
     }
 

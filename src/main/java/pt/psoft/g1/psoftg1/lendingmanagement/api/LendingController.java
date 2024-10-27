@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,6 @@ import pt.psoft.g1.psoftg1.lendingmanagement.services.CreateLendingRequest;
 import pt.psoft.g1.psoftg1.lendingmanagement.services.LendingService;
 import pt.psoft.g1.psoftg1.lendingmanagement.services.SearchLendingQuery;
 import pt.psoft.g1.psoftg1.lendingmanagement.services.SetLendingReturnedRequest;
-import pt.psoft.g1.psoftg1.readermanagement.api.ReaderLendingsAvgPerMonthView;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.readermanagement.services.ReaderService;
 import pt.psoft.g1.psoftg1.shared.api.ListResponse;
@@ -36,7 +35,6 @@ import java.util.Objects;
 
 @Tag(name = "Lendings", description = "Endpoints for managing Lendings")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/lendings")
 public class LendingController {
     private final LendingService lendingService;
@@ -45,6 +43,16 @@ public class LendingController {
     private final ConcurrencyService concurrencyService;
 
     private final LendingViewMapper lendingViewMapper;
+
+    @Autowired
+    public LendingController(LendingService lendingService, ReaderService readerService, UserService userService, ConcurrencyService concurrencyService, LendingViewMapper lendingViewMapper) {
+        this.lendingService = lendingService;
+        this.readerService = readerService;
+        this.userService = userService;
+        this.concurrencyService = concurrencyService;
+        this.lendingViewMapper = lendingViewMapper;
+    }
+
 
     @Operation(summary = "Creates a new Lending")
     @PostMapping

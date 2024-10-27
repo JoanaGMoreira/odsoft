@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.joining;
 
 import java.time.Instant;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,6 @@ import pt.psoft.g1.psoftg1.usermanagement.services.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Based on https://github.com/Yoh0xFF/java-spring-security-example
@@ -57,7 +57,6 @@ import lombok.RequiredArgsConstructor;
  */
 @Tag(name = "Authentication")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "api/public")
 public class AuthApi {
 
@@ -68,6 +67,14 @@ public class AuthApi {
 	private final UserViewMapper userViewMapper;
 
 	private final UserService userService;
+
+	@Autowired
+	public AuthApi(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, UserViewMapper userViewMapper, UserService userService) {
+		this.authenticationManager = authenticationManager;
+		this.jwtEncoder = jwtEncoder;
+		this.userViewMapper = userViewMapper;
+		this.userService = userService;
+	}
 
 	@PostMapping("login")
 	public ResponseEntity<UserView> login(@RequestBody @Valid final AuthRequest request) {

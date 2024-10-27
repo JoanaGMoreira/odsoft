@@ -1,6 +1,6 @@
 package pt.psoft.g1.psoftg1.lendingmanagement.services;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @PropertySource({"classpath:config/library.properties"})
 public class LendingServiceImpl implements LendingService{
     private final LendingRepository lendingRepository;
@@ -33,6 +32,14 @@ public class LendingServiceImpl implements LendingService{
     private int lendingDurationInDays;
     @Value("${fineValuePerDayInCents}")
     private int fineValuePerDayInCents;
+
+    @Autowired
+    public LendingServiceImpl(LendingRepository lendingRepository, FineRepository fineRepository, BookRepository bookRepository, ReaderRepository readerRepository) {
+        this.lendingRepository = lendingRepository;
+        this.fineRepository = fineRepository;
+        this.bookRepository = bookRepository;
+        this.readerRepository = readerRepository;
+    }
 
     @Override
     public Optional<Lending> findByLendingNumber(String lendingNumber){

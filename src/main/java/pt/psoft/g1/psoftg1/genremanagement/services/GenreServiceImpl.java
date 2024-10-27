@@ -1,6 +1,6 @@
 package pt.psoft.g1.psoftg1.genremanagement.services;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,18 +16,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
 
+    @Autowired
+    public GenreServiceImpl(GenreRepository genreRepository) {
+        this.genreRepository = genreRepository;
+    }
 
     public Optional<Genre> findByString(String name) {
         return genreRepository.findByString(name);
     }
 
     @Override
-    public Iterable<Genre> findAll() {
+    public List<Genre> findAll() {
         return genreRepository.findAll();
     }
 

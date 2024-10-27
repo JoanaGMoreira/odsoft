@@ -2,7 +2,7 @@ package pt.psoft.g1.psoftg1.genremanagement.api;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
 import pt.psoft.g1.psoftg1.genremanagement.services.GenreService;
@@ -12,11 +12,16 @@ import pt.psoft.g1.psoftg1.shared.services.SearchRequest;
 
 @Tag(name = "Genres", description = "Endpoints for managing Genres")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/genres")
 public class GenreController {
     private final GenreService genreService;
     private final GenreViewMapper genreViewMapper;
+
+    @Autowired
+    public GenreController(GenreService genreService, GenreViewMapper genreViewMapper) {
+        this.genreService = genreService;
+        this.genreViewMapper = genreViewMapper;
+    }
 
     @PostMapping(value="/avgLendingsPerGenre")
     public ListResponse<GenreLendingsView> getAverageLendings(

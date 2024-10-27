@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,7 +50,6 @@ import java.util.Optional;
 
 @Tag(name = "Readers", description = "Endpoints to manage readers")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/readers")
 class ReaderController {
     private final ReaderService readerService;
@@ -61,6 +60,21 @@ class ReaderController {
     private final ConcurrencyService concurrencyService;
     private final FileStorageService fileStorageService;
     private final ApiNinjasService apiNinjasService;
+
+    @Autowired
+    public ReaderController(ReaderService readerService, UserService userService, ReaderViewMapper readerViewMapper, LendingService lendingService, LendingViewMapper lendingViewMapper, ConcurrencyService concurrencyService, FileStorageService fileStorageService, ApiNinjasService apiNinjasService) {
+        this.readerService = readerService;
+        this.userService = userService;
+        this.readerViewMapper = readerViewMapper;
+        this.lendingService = lendingService;
+        this.lendingViewMapper = lendingViewMapper;
+        this.concurrencyService = concurrencyService;
+        this.fileStorageService = fileStorageService;
+        this.apiNinjasService = apiNinjasService;
+    }
+
+    @Autowired
+
 
     @Operation(summary = "Gets the reader data if authenticated as Reader or all readers if authenticated as Librarian")
     @ApiResponse(description = "Success", responseCode = "200", content = { @Content(mediaType = "application/json",

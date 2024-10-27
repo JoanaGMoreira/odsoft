@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author  rmfranca*/
 @Getter
 @Entity
-@Document
+@Document(collection = "fine")
 public class Fine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

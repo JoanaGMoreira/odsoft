@@ -1,7 +1,6 @@
 package pt.psoft.g1.psoftg1.lendingmanagement.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -25,7 +24,7 @@ import java.util.Optional;
  * natural key ({@code LendingNumber}) with its own business rules.
  * @author  rmfranca*/
 @Entity
-@Document
+@Document(collection = "lending")
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames={"LENDING_NUMBER"})})
 public class Lending {

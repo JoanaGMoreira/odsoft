@@ -1,6 +1,5 @@
 package pt.psoft.g1.psoftg1.readermanagement.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import java.nio.file.InvalidPathException;
 import java.util.List;
 
 @Entity
-@Document
+@Document(collection = "reader_details")
 @Table(name = "READER_DETAILS")
 public class ReaderDetails extends EntityWithPhoto {
     @Id

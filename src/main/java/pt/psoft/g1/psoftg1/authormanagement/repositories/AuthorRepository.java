@@ -14,7 +14,7 @@ public interface AuthorRepository {
     List<Author> searchByNameNameStartsWith(String name);
     List<Author> searchByNameName(String name);
     Author save(Author author);
-    Iterable<Author> findAll();
+    List<Author> findAll();
     Page<AuthorLendingView> findTopAuthorByLendings (Pageable pageableRules);
     void delete(Author author);
     List<Author> findCoAuthorsByAuthorNumber(Long authorNumber);

@@ -10,7 +10,7 @@ import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
 import pt.psoft.g1.psoftg1.shared.model.Name;
 
 @Entity
-@Document
+@Document(collection = "author")
 public class Author extends EntityWithPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

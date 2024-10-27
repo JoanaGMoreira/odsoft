@@ -48,7 +48,7 @@ import lombok.Setter;
  *
  */
 @Entity
-@Document
+@Document(collection = "users")
 @Table(name = "T_USER")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {

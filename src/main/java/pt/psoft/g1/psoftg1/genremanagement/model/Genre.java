@@ -6,7 +6,7 @@ import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Entity
-@Document
+@Document(collection = "genre")
 @Table
 public class Genre {
     @Transient

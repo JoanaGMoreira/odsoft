@@ -5,12 +5,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,13 +21,10 @@ import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
 import pt.psoft.g1.psoftg1.authormanagement.services.UpdateAuthorRequest;
 import pt.psoft.g1.psoftg1.bookmanagement.api.BookView;
 import pt.psoft.g1.psoftg1.bookmanagement.api.BookViewMapper;
-import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
-import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.shared.api.ListResponse;
 import pt.psoft.g1.psoftg1.shared.services.ConcurrencyService;
 import pt.psoft.g1.psoftg1.shared.services.FileStorageService;
-import pt.psoft.g1.psoftg1.usermanagement.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +33,6 @@ import java.util.Optional;
 
 @Tag(name = "Author", description = "Endpoints for managing Authors")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/authors")
 public class AuthorController {
     private final AuthorService authorService;
@@ -46,6 +41,14 @@ public class AuthorController {
     private final FileStorageService fileStorageService;
     private final BookViewMapper bookViewMapper;
 
+    @Autowired
+    public AuthorController(AuthorService authorService, AuthorViewMapper authorViewMapper, ConcurrencyService concurrencyService, FileStorageService fileStorageService, BookViewMapper bookViewMapper) {
+        this.authorService = authorService;
+        this.authorViewMapper = authorViewMapper;
+        this.concurrencyService = concurrencyService;
+        this.fileStorageService = fileStorageService;
+        this.bookViewMapper = bookViewMapper;
+    }
 
     //Create
     @Operation(summary = "Creates a new Author")

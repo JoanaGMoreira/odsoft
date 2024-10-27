@@ -20,7 +20,7 @@
  */
 package pt.psoft.g1.psoftg1.usermanagement.services;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,7 +47,6 @@ import java.util.Optional;
  *
  */
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepo;
@@ -56,6 +55,14 @@ public class UserService implements UserDetailsService {
 	private final ForbiddenNameRepository forbiddenNameRepository;
 
 	private final PasswordEncoder passwordEncoder;
+
+	@Autowired
+	public UserService(UserRepository userRepo, EditUserMapper userEditMapper, ForbiddenNameRepository forbiddenNameRepository, PasswordEncoder passwordEncoder) {
+		this.userRepo = userRepo;
+		this.userEditMapper = userEditMapper;
+		this.forbiddenNameRepository = forbiddenNameRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	public List<User> findByName(String name){
 		return this.userRepo.findByNameName(name);
@@ -70,7 +77,7 @@ public class UserService implements UserDetailsService {
 
 		Iterable<String> words = List.of(request.getName().split("\\s+"));
 		for (String word : words){
-			if(!forbiddenNameRepository.findByForbiddenNameIsContained(word).isEmpty()) {
+			if(!forbiddenNameRepository.findByForbiddenNameContaining(word).isEmpty()) {
 				throw new IllegalArgumentException("Name contains a forbidden word");
 			}
 		}

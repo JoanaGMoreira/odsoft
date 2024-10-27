@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Books", description = "Endpoints for managing Books")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
@@ -50,6 +49,17 @@ public class BookController {
     private final ReaderService readerService;
 
     private final BookViewMapper bookViewMapper;
+
+    @Autowired
+    public BookController(BookService bookService, LendingService lendingService, ConcurrencyService concurrencyService, FileStorageService fileStorageService, UserService userService, ReaderService readerService, BookViewMapper bookViewMapper) {
+        this.bookService = bookService;
+        this.lendingService = lendingService;
+        this.concurrencyService = concurrencyService;
+        this.fileStorageService = fileStorageService;
+        this.userService = userService;
+        this.readerService = readerService;
+        this.bookViewMapper = bookViewMapper;
+    }
 
     @Operation(summary = "Register a new Book")
     @PutMapping(value = "/{isbn}")

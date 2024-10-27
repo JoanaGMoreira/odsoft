@@ -1,5 +1,6 @@
 package pt.psoft.g1.psoftg1.bookmanagement.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.bookmanagement.model.*;
 import pt.psoft.g1.psoftg1.bookmanagement.repositories.BookRepository;
-import lombok.RequiredArgsConstructor;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 import pt.psoft.g1.psoftg1.authormanagement.repositories.AuthorRepository;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @PropertySource({"classpath:config/library.properties"})
 public class BookServiceImpl implements BookService {
 
@@ -39,6 +38,15 @@ public class BookServiceImpl implements BookService {
 
 	@Value("${suggestionsLimitPerGenre}")
 	private long suggestionsLimitPerGenre;
+
+	@Autowired
+	public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository, PhotoRepository photoRepository, ReaderRepository readerRepository) {
+		this.bookRepository = bookRepository;
+		this.genreRepository = genreRepository;
+		this.authorRepository = authorRepository;
+		this.photoRepository = photoRepository;
+		this.readerRepository = readerRepository;
+	}
 
 	@Override
 	public Book create(CreateBookRequest request, String isbn) {

@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Entity
-@Document
+@Document(collection = "forbidden_name")
 @NoArgsConstructor
 public class ForbiddenName{
 

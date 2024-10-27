@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Document
+@Document(collection = "book")
 @Table(name = "Book", uniqueConstraints = {
         @UniqueConstraint(name = "uc_book_isbn", columnNames = {"ISBN"})
 })

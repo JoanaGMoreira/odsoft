@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.nio.file.Path;
 
 @Entity
-@Document
+@Document(collection = "photo")
 public class Photo {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

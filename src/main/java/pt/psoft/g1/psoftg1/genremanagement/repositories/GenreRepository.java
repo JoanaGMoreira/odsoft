@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface GenreRepository {
 
-    Iterable<Genre> findAll();
+    List<Genre> findAll();
     Optional<Genre> findByString(String genreName);
     Genre save(Genre genre);
     Page<GenreBookCountDTO> findTop5GenreByBookCount(Pageable pageable);
