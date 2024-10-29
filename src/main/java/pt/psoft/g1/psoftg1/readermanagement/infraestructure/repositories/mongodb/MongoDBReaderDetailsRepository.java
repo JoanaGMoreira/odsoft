@@ -8,6 +8,6 @@ import pt.psoft.g1.psoftg1.readermanagement.repositories.ReaderRepository;
 
 @Repository
 @Profile("mongodb")
-public interface MongoBdReaderDetailsRepository extends MongoRepository<ReaderDetails, String>, ReaderRepository {
+public interface MongoDBReaderDetailsRepository extends MongoRepository<ReaderDetails, String>, ReaderRepository {
 
 }

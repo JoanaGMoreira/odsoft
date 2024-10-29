@@ -8,5 +8,5 @@ import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 
 @Repository
 @Profile("mongodb")
-public interface MongoDbUserRepository extends MongoRepository<User, String>, UserRepository {
+public interface MongoDBUserRepository extends MongoRepository<User, String>, UserRepository {
 }

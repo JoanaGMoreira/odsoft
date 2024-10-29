@@ -28,7 +28,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
@@ -42,7 +42,7 @@ import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 @Repository
 @CacheConfig(cacheNames = "users")
 @Profile("mysql")
-public interface SpringDataUserRepository extends UserRepository, UserRepoCustom, CrudRepository<User, Long> {
+public interface MysqlUserRepository extends UserRepository, UserRepoCustom, JpaRepository<User, Long> {
 
 	@Override
 	@CacheEvict(allEntries = true)

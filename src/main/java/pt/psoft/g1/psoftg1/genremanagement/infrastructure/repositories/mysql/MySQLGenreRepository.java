@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.bookmanagement.services.GenreBookCountDTO;
@@ -16,7 +16,7 @@ import java.util.*;
 
 @Repository
 @Profile("mysql")
-public interface SpringDataGenreRepository extends GenreRepository, GenreRepoCustom, CrudRepository<Genre, Integer> {
+public interface MySQLGenreRepository extends GenreRepository, GenreRepoCustom, JpaRepository<Genre, Integer> {
 
     @Query("SELECT g FROM Genre g")
     List<Genre> findAllGenres();

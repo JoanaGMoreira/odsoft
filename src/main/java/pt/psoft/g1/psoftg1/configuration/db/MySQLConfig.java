@@ -8,15 +8,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql.MySQLAuthorRepository;
+import pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql.MySQLBookRepository;
+import pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.mysql.MySQLGenreRepository;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.MySQLFineRepository;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.MySQLLendingRepository;
+import pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql.MysqlReaderRepositoryImpl;
+import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MysqlForbiddenNameRepository;
+import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MysqlPhotoRepository;
+import pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql.MysqlUserRepository;
 
 import javax.sql.DataSource;
 
 @Configuration
 @Profile("mysql")
-@EnableJpaRepositories(basePackages = {"pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql",
-        "pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.mysql",
-        "pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql",
-        "pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql"})
+@EnableJpaRepositories(basePackageClasses = {MySQLAuthorRepository.class, MySQLBookRepository.class, MySQLGenreRepository.class,
+                MySQLFineRepository.class, MySQLLendingRepository.class, MysqlReaderRepositoryImpl.class,
+                MysqlForbiddenNameRepository.class, MysqlPhotoRepository.class, MysqlUserRepository.class})
 public class MySQLConfig {
 
     @Autowired

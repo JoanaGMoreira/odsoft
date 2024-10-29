@@ -2,12 +2,12 @@ package pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.psoft.g1.psoftg1.shared.model.Photo;
 import pt.psoft.g1.psoftg1.shared.repositories.PhotoRepository;
 
-public interface SpringDataPhotoRepository extends PhotoRepository, CrudRepository<Photo, Long> {
+public interface MysqlPhotoRepository extends PhotoRepository, JpaRepository<Photo, Long> {
     /*@Override
     @Query("SELECT p " +
             "FROM Photo p " +

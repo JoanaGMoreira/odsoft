@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.authormanagement.api.AuthorLendingView;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @Profile("mysql")
-public interface SpringDataAuthorRepository extends AuthorRepository, CrudRepository<Author, Long> {
+public interface MySQLAuthorRepository extends AuthorRepository, JpaRepository<Author, Long> {
     @Override
     Optional<Author> findByAuthorNumber(Long authorNumber);
 
@@ -23,7 +23,7 @@ public interface SpringDataAuthorRepository extends AuthorRepository, CrudReposi
     @Query("SELECT new pt.psoft.g1.psoftg1.authormanagement.api.AuthorLendingView(a.name.name, COUNT(l.pk)) " +
             "FROM Book b " +
             "JOIN b.authors a " +
-            "JOIN Lending l ON l.book.pk = b.pk " +
+            "JOIN LendingEntity l ON l.book.pk = b.pk " +
             "GROUP BY a.name " +
             "ORDER BY COUNT(l) DESC")
     Page<AuthorLendingView> findTopAuthorByLendings(Pageable pageable);

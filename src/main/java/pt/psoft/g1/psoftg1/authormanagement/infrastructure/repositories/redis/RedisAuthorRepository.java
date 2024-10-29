@@ -15,11 +15,11 @@ import java.util.Optional;
 
 @Repository
 @Profile("redis")
-public class RedisDbAuthorRepository implements AuthorRepository {
+public class RedisAuthorRepository implements AuthorRepository {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    public RedisDbAuthorRepository(RedisTemplate<String, Object> redisTemplate) {
+    public RedisAuthorRepository(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

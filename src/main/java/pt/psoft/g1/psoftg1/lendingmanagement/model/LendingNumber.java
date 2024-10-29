@@ -1,67 +1,37 @@
 package pt.psoft.g1.psoftg1.lendingmanagement.model;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-/**
- * The {@code LendingNumber} class handles the business logic of the identifier of a {@code Lending}.
- * <p>
- * It stores the year of the lending and a sequencial number, and a string combining these two.
- * @author  rmfranca*/
-@Embeddable
+@Getter
+@NoArgsConstructor
 public class LendingNumber implements Serializable {
 
-    /**
-     * Natural key of a {@code Lending}.
-     * <p>
-     * The string is constructed based on the values of {@code year} and {@code sequencial} (e.g.: 2024/23).
-     */
-    @Column(name = "LENDING_NUMBER", length = 32)
-    @NotNull
-    @NotBlank
-    @Size(min = 6, max = 32)
     private String lendingNumber;
 
-
     /**
-     * Constructs a new {@code LendingNumber} object based on a year and a given sequential number.
-     * @param   year        Year component of the {@code LendingNumber}
-     * @param   sequential  Sequential component of the {@code LendingNumber}
-     * */
+     * Constructs a new {@code LendingNumber} based on a year and a sequential number.
+     * @param year       Year component of the lending number.
+     * @param sequential Sequential component of the lending number.
+     */
     public LendingNumber(int year, int sequential) {
-        if(year < 1970 || LocalDate.now().getYear() < year)
+        if (year < 1970 || LocalDate.now().getYear() < year)
             throw new IllegalArgumentException("Invalid year component");
-        if(sequential < 0)
-            throw new IllegalArgumentException("Sequencial component cannot be negative");
+        if (sequential < 0)
+            throw new IllegalArgumentException("Sequential component cannot be negative");
         this.lendingNumber = year + "/" + sequential;
     }
 
     /**
-     * Constructs a new {@code LendingNumber} object based on a string.
-     * <p>
-     * Initialization may fail if the format is not as expected.
-     * @param lendingNumber String containing the lending number.
-     * */
-    public LendingNumber(String lendingNumber){
-        if(lendingNumber == null)
-            throw new IllegalArgumentException("Lending number cannot be null");
-
-        int year, sequential;
-        try {
-            year        = Integer.parseInt(lendingNumber, 0, 4, 10);
-            sequential  = Integer.parseInt(lendingNumber, 5, lendingNumber.length(), 10);
-            if(lendingNumber.charAt(4) != '/')
-                throw new IllegalArgumentException("Lending number has wrong format. It should be \"{year}/{sequential}\"");
-        }catch (NumberFormatException | IndexOutOfBoundsException e){
-            throw new IllegalArgumentException("Lending number has wrong format. It should be \"{year}/{sequential}\"");
-        }
-        this.lendingNumber = year + "/" + sequential;
+     * Constructs a new {@code LendingNumber} based on a lending number string.
+     * @param lendingNumber Formatted lending number as "{year}/{sequential}".
+     */
+    public LendingNumber(String lendingNumber) {
+        if (lendingNumber == null || !lendingNumber.matches("\\d{4}/\\d+"))
+            throw new IllegalArgumentException("Lending number format should be \"{year}/{sequential}\"");
+        this.lendingNumber = lendingNumber;
     }
 
     /**
@@ -77,11 +47,8 @@ public class LendingNumber implements Serializable {
         this.lendingNumber = LocalDate.now().getYear() + "/" + sequential;
     }
 
-    /**Protected empty constructor for ORM only.*/
-    public LendingNumber() {}
-
+    @Override
     public String toString() {
         return this.lendingNumber;
     }
-
 }

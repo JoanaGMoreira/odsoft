@@ -8,5 +8,5 @@ import pt.psoft.g1.psoftg1.bookmanagement.repositories.BookRepository;
 
 @Repository
 @Profile("mongodb")
-public interface MongoBookRepository extends MongoRepository<Book, String>, BookRepository {
+public interface MongoDBBookRepository extends MongoRepository<Book, String>, BookRepository {
 }

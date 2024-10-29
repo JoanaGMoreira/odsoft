@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Repository
 @Profile("mysql")
-public interface SpringDataBookRepository  extends BookRepository, BookRepoCustom, CrudRepository<Book, Isbn> {
+public interface MySQLBookRepository extends BookRepository, BookRepoCustom, JpaRepository<Book, Isbn> {
 
     @Query("SELECT b " +
             "FROM Book b " +
@@ -28,7 +28,7 @@ public interface SpringDataBookRepository  extends BookRepository, BookRepoCusto
     @Override
     @Query("SELECT new pt.psoft.g1.psoftg1.bookmanagement.services.BookCountDTO(b, COUNT(l)) " +
                 "FROM Book b " +
-                "JOIN Lending l ON l.book = b " +
+                "JOIN LendingEntity l ON l.book = b " +
                 "WHERE l.startDate > :oneYearAgo " +
                 "GROUP BY b " +
                 "ORDER BY COUNT(l) DESC")
