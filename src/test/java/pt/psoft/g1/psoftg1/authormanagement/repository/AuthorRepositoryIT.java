@@ -35,11 +35,11 @@ public class AuthorRepositoryIT {
         authorRepository.save(alex);
 
         // when
-        List<Author> list = authorRepository.searchByNameName(alex.getName());
+        List<Author> list = authorRepository.searchByNameName(alex.getStringName());
 
         // then
         assertThat(list).isNotEmpty();
-        assertThat(list.get(0).getName()).isEqualTo(alex.getName());
+        assertThat(list.get(0).getStringName()).isEqualTo(alex.getStringName());
     }
 
     //@Test
@@ -55,7 +55,7 @@ public class AuthorRepositoryIT {
                 .collect(Collectors.toList());
 
         // then
-        assertThat(authors).hasSize(2).extracting(Author::getName).containsExactlyInAnyOrder("Alex", "John");
+        assertThat(authors).hasSize(2).extracting(Author::getStringName).containsExactlyInAnyOrder("Alex", "John");
     }
 
     //@Test
@@ -99,7 +99,7 @@ public class AuthorRepositoryIT {
 
         // Então deve retornar o autor correto
         assertThat(foundAuthor).isPresent();
-        assertThat(foundAuthor.get().getName()).isEqualTo("Alex");
+        assertThat(foundAuthor.get().getStringName()).isEqualTo("Alex");
     }
 
     //@Test
@@ -127,7 +127,7 @@ public class AuthorRepositoryIT {
 
         // Então deve retornar a lista de co-autores (testa-se o relacionamento de co-autoria)
         assertThat(coAuthors).isNotEmpty();
-        assertThat(coAuthors.get(0).getName()).isEqualTo("John");
+        assertThat(coAuthors.get(0).getStringName()).isEqualTo("John");
     }
 
     //@Test

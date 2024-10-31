@@ -10,7 +10,7 @@ import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.bookmanagement.services.UpdateBookRequest;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
-import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
+import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MySQLEntityWithPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @Table(name = "Book", uniqueConstraints = {
         @UniqueConstraint(name = "uc_book_isbn", columnNames = {"ISBN"})
 })
-public class Book extends EntityWithPhoto {
+public class Book extends MySQLEntityWithPhoto {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     long pk;

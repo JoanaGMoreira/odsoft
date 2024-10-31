@@ -1,66 +1,41 @@
 package pt.psoft.g1.psoftg1.authormanagement.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.data.mongodb.core.mapping.Document;
 import pt.psoft.g1.psoftg1.authormanagement.services.UpdateAuthorRequest;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
 import pt.psoft.g1.psoftg1.shared.model.Name;
 
-@Entity
-@Document(collection = "author")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Author extends EntityWithPhoto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "AUTHOR_NUMBER")
-    @Getter
+
     private Long authorNumber;
 
-    @Version
-    private long version;
+    private Long version;
 
-    @Embedded
     private Name name;
 
-    @Embedded
     private Bio bio;
 
-    public void setName(String name) {
-        this.name = new Name(name);
-    }
-
-    public void setBio(String bio) {
-        this.bio = new Bio(bio);
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public Long getId() {
-        return authorNumber;
-    }
 
     public Author(String name, String bio, String photoURI) {
-        setName(name);
-        setBio(bio);
+        setName(new Name(name));
+        setBio( new Bio(bio));
         setPhotoInternal(photoURI);
     }
-
-    protected Author() {
-        // got ORM only
-    }
-
 
     public void applyPatch(final long desiredVersion, final UpdateAuthorRequest request) {
         if (this.version != desiredVersion)
             throw new StaleObjectStateException("Object was already modified by another user", this.authorNumber);
         if (request.getName() != null)
-            setName(request.getName());
+            setName(new Name(request.getName()));
         if (request.getBio() != null)
-            setBio(request.getBio());
+            setBio(new Bio(request.getBio()));
         if(request.getPhotoURI() != null)
             setPhotoInternal(request.getPhotoURI());
     }
@@ -72,11 +47,11 @@ public class Author extends EntityWithPhoto {
 
         setPhotoInternal(null);
     }
-    public String getName() {
+    public String getStringName() {
         return this.name.toString();
     }
 
-    public String getBio() {
+    public String getStringBio() {
         return this.bio.toString();
     }
 }

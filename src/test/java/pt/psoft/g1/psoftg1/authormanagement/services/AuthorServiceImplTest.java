@@ -50,7 +50,7 @@ public class AuthorServiceImplTest {
                 .thenAnswer(invocation -> {
                     Long id = invocation.getArgument(0);
                     return authors.stream()
-                            .filter(a -> a.getId() != null && a.getId().equals(id))
+                            .filter(a -> a.getAuthorNumber() != null && a.getAuthorNumber().equals(id))
                             .findFirst();
                 });
         Mockito.when(authorRepository.save(any(Author.class))).thenAnswer(invocation -> {
@@ -65,7 +65,7 @@ public class AuthorServiceImplTest {
     public void whenValidId_thenAuthorShouldBeFound() {
         Long id = 1L;
         Optional<Author> found = authorService.findByAuthorNumber(id);
-        found.ifPresent(author -> assertThat(author.getId()).isEqualTo(id));
+        found.ifPresent(author -> assertThat(author.getAuthorNumber()).isEqualTo(id));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class AuthorServiceImplTest {
     public void whenFindAllAuthors_thenAllAuthorsShouldBeReturned() {
         List<Author> allAuthors = (List<Author>) authorService.findAll();
         assertThat(allAuthors).hasSize(2);
-        assertThat(allAuthors).extracting(Author::getName).containsExactlyInAnyOrder("Alex", "John");
+        assertThat(allAuthors).extracting(Author::getStringName).containsExactlyInAnyOrder("Alex", "John");
     }
 
     @Test
@@ -92,7 +92,7 @@ public class AuthorServiceImplTest {
         Mockito.when(authorRepository.save(any(Author.class))).thenReturn(newAuthor);
 
         Author savedAuthor = authorService.create(createAuthorRequest);
-        assertThat(savedAuthor.getName()).isEqualTo("New Author");
+        assertThat(savedAuthor.getStringName()).isEqualTo("New Author");
     }
 
     //@Test
@@ -108,14 +108,14 @@ public class AuthorServiceImplTest {
         Mockito.when(authorRepository.findByAuthorNumber(id)).thenReturn(Optional.of(authors.get(0)));
 
         Author updatedAuthor = authorService.partialUpdate(id, updateRequest, 1); // Passando a versão desejada
-        assertThat(updatedAuthor.getName()).isEqualTo("Alex Updated");
+        assertThat(updatedAuthor.getStringName()).isEqualTo("Alex Updated");
     }
 
     @Test
     public void whenRemoveAuthorPhoto_thenPhotoShouldBeRemoved() {
         Long id = 1L;
         Author author = authors.get(0);
-        author.setPhoto("path/to/photo");
+        author.setPhotoUri("path/to/photo");
 
         // Simulando o repositório
         Mockito.when(authorRepository.findByAuthorNumber(id)).thenReturn(Optional.of(author));
@@ -137,7 +137,7 @@ public class AuthorServiceImplTest {
 
         // Então deve retornar o autor Alex (caixa opaca: foco no comportamento)
         assertThat(foundAuthor).isPresent();
-        assertThat(foundAuthor.get().getName()).isEqualTo("Alex");
+        assertThat(foundAuthor.get().getStringName()).isEqualTo("Alex");
     }
 
     @Test
@@ -153,7 +153,7 @@ public class AuthorServiceImplTest {
         Author createdAuthor = authorService.create(request);
 
         // Então deve retornar o novo autor criado corretamente
-        assertThat(createdAuthor.getName()).isEqualTo("AuthorX");
+        assertThat(createdAuthor.getStringName()).isEqualTo("AuthorX");
     }
 
     @Test
@@ -184,8 +184,8 @@ public class AuthorServiceImplTest {
         Author updatedAuthor = authorService.partialUpdate(authorId, updateRequest, existingAuthor.getVersion());
 
         // Então o autor deve ter sido atualizado corretamente
-        assertThat(updatedAuthor.getName()).isEqualTo("Updated Name");
-        assertThat(updatedAuthor.getBio()).isEqualTo("Updated Bio");
+        assertThat(updatedAuthor.getStringName()).isEqualTo("Updated Name");
+        assertThat(updatedAuthor.getStringBio()).isEqualTo("Updated Bio");
     }
 }
 

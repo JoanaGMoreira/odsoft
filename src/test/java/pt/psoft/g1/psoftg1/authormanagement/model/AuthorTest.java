@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
 import pt.psoft.g1.psoftg1.authormanagement.services.UpdateAuthorRequest;
-import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
+pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.EntityWithPhoto;
 import pt.psoft.g1.psoftg1.shared.model.Photo;
 
 

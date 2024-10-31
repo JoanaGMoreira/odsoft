@@ -11,7 +11,6 @@ import java.util.Optional;
 @Getter
 public class Lending {
 
-    private final LendingNumber lendingNumber;
     private final Book book;
     private final ReaderDetails readerDetails;
     private final LocalDate startDate;
@@ -22,13 +21,12 @@ public class Lending {
     @Setter
     private String commentary;
 
-    public Lending(Book book, ReaderDetails readerDetails, int seq, LocalDate startDate,
+    public Lending(Book book, ReaderDetails readerDetails, LocalDate startDate,
                    LocalDate limitDate, int fineValuePerDayInCents) {
         this.book = book;
         this.readerDetails = readerDetails;
         this.startDate = startDate;
         this.limitDate = limitDate;
-        this.lendingNumber = new LendingNumber(seq);
         this.fineValuePerDayInCents = fineValuePerDayInCents;
     }
 

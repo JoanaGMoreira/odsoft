@@ -4,10 +4,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import pt.psoft.g1.psoftg1.shared.model.Photo;
 import pt.psoft.g1.psoftg1.shared.repositories.PhotoRepository;
 
-public interface MysqlPhotoRepository extends PhotoRepository, JpaRepository<Photo, Long> {
+public interface MysqlPhotoRepository extends PhotoRepository, JpaRepository<PhotoEntity, Long> {
     /*@Override
     @Query("SELECT p " +
             "FROM Photo p " +
@@ -17,7 +16,7 @@ public interface MysqlPhotoRepository extends PhotoRepository, JpaRepository<Pho
     @Modifying
     @Transactional
     @Query("DELETE " +
-            "FROM Photo p " +
+            "FROM PhotoEntity p " +
             "WHERE p.photoFile = :photoFile")
     void deleteByPhotoFile(String photoFile);
 }

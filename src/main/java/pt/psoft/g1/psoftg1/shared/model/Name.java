@@ -7,14 +7,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.context.annotation.PropertySource;
 
+
 @Getter
-@Embeddable
-@PropertySource({"classpath:config/library.properties"})
 public class Name {
-    @NotNull
-    @NotBlank
-    @Column(name="NAME", length = 150)
-    String name;
+
+    private String name;
+
     public Name(String name){
         setName(name);
     }
@@ -40,7 +38,5 @@ public class Name {
         return this.name;
     }
 
-    protected Name() {
-        // for ORM only
-    }
+
 }

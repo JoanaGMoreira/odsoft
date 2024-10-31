@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pt.psoft.g1.psoftg1.authormanagement.api.AuthorLendingView;
+import pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql.AuthorEntity;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.authormanagement.repositories.AuthorRepository;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
@@ -118,12 +119,13 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> findCoAuthorsByAuthorNumber(Long authorNumber) {
         return authorRepository.findCoAuthorsByAuthorNumber(authorNumber);
     }
+
     @Override
     public Optional<Author> removeAuthorPhoto(Long authorNumber, long desiredVersion) {
         Author author = authorRepository.findByAuthorNumber(authorNumber)
                 .orElseThrow(() -> new NotFoundException("Cannot find reader"));
 
-        String photoFile = author.getPhoto().getPhotoFile();
+        String photoFile = author.getPhoto()!= null ? author.getPhoto().getPhotoFile() : null;
         author.removePhoto(desiredVersion);
         Optional<Author> updatedAuthor = Optional.of(authorRepository.save(author));
         photoRepository.deleteByPhotoFile(photoFile);

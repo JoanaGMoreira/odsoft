@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.readermanagement.services.UpdateReaderRequest;
-import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
+pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.EntityWithPhoto;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 
 import java.nio.file.InvalidPathException;
