@@ -27,7 +27,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @Transactional
 @SpringBootTest
 class LendingServiceImplTest {
@@ -55,47 +54,24 @@ class LendingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        author = new Author("Manuel Antonio Pina",
-                "Manuel António Pina foi um jornalista e escritor português, premiado em 2011 com o Prémio Camões",
-                null);
+        author = new Author("Manuel Antonio Pina", "Prêmio Camões 2011", null);
         authorRepository.save(author);
 
         genre = new Genre("Género");
         genreRepository.save(genre);
 
         List<Author> authors = List.of(author);
-        book = new Book("9782826012092",
-                "O Inspetor Max",
-                "conhecido pastor-alemão que trabalha para a Judiciária, vai ser fundamental para resolver um importante caso de uma rede de malfeitores que quer colocar uma bomba num megaconcerto de uma ilustre cantora",
-                genre,
-                authors,
-                null);
+        book = new Book("9782826012092", "O Inspetor Max", "Descrição do livro", genre, authors, null);
         bookRepository.save(book);
 
         reader = Reader.newReader("manuel@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
         userRepository.save(reader);
 
-        readerDetails = new ReaderDetails(1,
-                reader,
-                "2000-01-01",
-                "919191919",
-                true,
-                true,
-                true,
-                null,null);
+        readerDetails = new ReaderDetails(1, reader, "2000-01-01", "919191919", true, true, true, null, null);
         readerRepository.save(readerDetails);
 
-        // Create and save the lending
-        lending = Lending.newBootstrappingLending(book,
-                readerDetails,
-                LocalDate.now().getYear(),
-                999,
-                LocalDate.of(LocalDate.now().getYear(), 1,1),
-                LocalDate.of(LocalDate.now().getYear(), 1,11),
-                15,
-                300);
+        lending = Lending.newBootstrappingLending(book, readerDetails, LocalDate.now().getYear(), 999, LocalDate.of(LocalDate.now().getYear(), 1, 1), LocalDate.of(LocalDate.now().getYear(), 1, 11), 15, 300);
         lendingRepository.save(lending);
-
     }
 
     @AfterEach
@@ -113,67 +89,36 @@ class LendingServiceImplTest {
         assertThat(lendingService.findByLendingNumber(LocalDate.now().getYear() + "/999")).isPresent();
         assertThat(lendingService.findByLendingNumber(LocalDate.now().getYear() + "/1")).isEmpty();
     }
-/*
-    @Test
-    void testListByReaderNumberAndIsbn() {
 
-    }
- */
     @Test
     void testCreate() {
-        var request = new CreateLendingRequest("9782826012092",
-                LocalDate.now().getYear() + "/1");
+        var request = new CreateLendingRequest("9782826012092", LocalDate.now().getYear() + "/1");
+
         var lending1 = lendingService.create(request);
         assertThat(lending1).isNotNull();
+
         var lending2 = lendingService.create(request);
         assertThat(lending2).isNotNull();
+
         var lending3 = lendingService.create(request);
         assertThat(lending3).isNotNull();
 
-        // 4th lending
         assertThrows(LendingForbiddenException.class, () -> lendingService.create(request));
 
         lendingRepository.delete(lending3);
-        lendingRepository.save(Lending.newBootstrappingLending(book,
-                readerDetails,
-                2024,
-                997,
-                LocalDate.of(2024, 3,1),
-                null,
-                15,
-                300));
+        lendingRepository.save(Lending.newBootstrappingLending(book, readerDetails, 2024, 997, LocalDate.of(2024, 3, 1), null, 15, 300));
 
-        // Having an overdue lending
         assertThrows(LendingForbiddenException.class, () -> lendingService.create(request));
-
     }
 
     @Test
     void testSetReturned() {
         int year = 2024, seq = 888;
-        var notReturnedLending = lendingRepository.save(Lending.newBootstrappingLending(book,
-                readerDetails,
-                year,
-                seq,
-                LocalDate.of(2024, 3,1),
-                null,
-                15,
-                300));
+        var notReturnedLending = lendingRepository.save(Lending.newBootstrappingLending(book, readerDetails, year, seq, LocalDate.of(2024, 3, 1), null, 15, 300));
+
         var request = new SetLendingReturnedRequest(null);
-        assertThrows(StaleObjectStateException.class,
-                () -> lendingService.setReturned(year + "/" + seq, request, (notReturnedLending.getVersion()-1)));
+        assertThrows(StaleObjectStateException.class, () -> lendingService.setReturned(year + "/" + seq, request, notReturnedLending.getVersion() - 1));
 
-        assertDoesNotThrow(
-                () -> lendingService.setReturned(year + "/" + seq, request, notReturnedLending.getVersion()));
+        assertDoesNotThrow(() -> lendingService.setReturned(year + "/" + seq, request, notReturnedLending.getVersion()));
     }
-/*
-    @Test
-    void testGetAverageDuration() {
-    }
-
-    @Test
-    void testGetOverdue() {
-    }
-
- */
 }

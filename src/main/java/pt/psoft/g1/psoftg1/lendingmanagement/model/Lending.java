@@ -229,7 +229,13 @@ public class Lending {
         return this.lendingNumber.toString();
     }
 
+    public void setLimitDate(LocalDate limitDate) {
+        this.limitDate = limitDate;
+    }
 
+    public void setVersion(long version) {
+        this.version = version;
+    }
     /**Protected empty constructor for ORM only.*/
     protected Lending() {}
 

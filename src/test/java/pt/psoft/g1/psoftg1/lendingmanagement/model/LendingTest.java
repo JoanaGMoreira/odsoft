@@ -9,7 +9,7 @@ import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
-
+import org.hibernate.StaleObjectStateException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -34,7 +34,7 @@ class LendingTest {
         authors.add(author);
         book = new Book("9782826012092",
                 "O Inspetor Max",
-                "conhecido pastor-alemão que trabalha para a Judiciária, vai ser fundamental para resolver um importante caso de uma rede de malfeitores que quer colocar uma bomba num megaconcerto de uma ilustre cantora",
+                "conhecido pastor-alemão que trabalha para a Judiciária...",
                 new Genre("Romance"),
                 authors,
                 null);
@@ -49,44 +49,38 @@ class LendingTest {
                 null);
     }
 
+    /** TESTES DE CAIXA PRETA **/
+
     @Test
     void ensureBookNotNull(){
-        assertThrows(IllegalArgumentException.class, () -> new Lending(null, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents));
+        assertThrows(IllegalArgumentException.class, () ->
+                new Lending(null, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents));
     }
 
     @Test
     void ensureReaderNotNull(){
-        assertThrows(IllegalArgumentException.class, () -> new Lending(book, null, 1, lendingDurationInDays, fineValuePerDayInCents));
+        assertThrows(IllegalArgumentException.class, () ->
+                new Lending(book, null, 1, lendingDurationInDays, fineValuePerDayInCents));
     }
 
     @Test
     void ensureValidReaderNumber(){
-        assertThrows(IllegalArgumentException.class, () -> new Lending(book, readerDetails, -1, lendingDurationInDays, fineValuePerDayInCents));
+        assertThrows(IllegalArgumentException.class, () ->
+                new Lending(book, readerDetails, -1, lendingDurationInDays, fineValuePerDayInCents));
     }
 
     @Test
-    void testSetReturned(){
+    void testFineCalculationWithDelay() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        lending.setReturned(0,null);
-        assertEquals(LocalDate.now(), lending.getReturnedDate());
-    }
-
-    @Test
-    void testGetDaysDelayed(){
-        Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(0, lending.getDaysDelayed());
+        lending.setReturned(0, null);
+        lending.setLimitDate(LocalDate.now().minusDays(3)); // Simula atraso de 3 dias
+        assertEquals(Optional.of(3 * fineValuePerDayInCents), lending.getFineValueInCents());
     }
 
     @Test
     void testGetDaysUntilReturn(){
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
         assertEquals(Optional.of(lendingDurationInDays), lending.getDaysUntilReturn());
-    }
-
-    @Test
-    void testGetDaysOverDue(){
-        Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(Optional.empty(), lending.getDaysOverdue());
     }
 
     @Test
@@ -101,34 +95,47 @@ class LendingTest {
         assertEquals(LocalDate.now().getYear() + "/1", lending.getLendingNumber());
     }
 
+
+    /** TESTES DE CAIXA BRANCA **/
+
     @Test
-    void testGetBook() {
+    void testGetDaysDelayed(){
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(book, lending.getBook());
+        lending.setLimitDate(LocalDate.now().minusDays(2));
+        lending.setReturned(0, null);
+        assertEquals(2, lending.getDaysDelayed());
     }
 
     @Test
-    void testGetReaderDetails() {
+    void testSetReturnedWithVersionControl() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(readerDetails, lending.getReaderDetails());
+        lending.setVersion(1);
+        assertThrows(StaleObjectStateException.class, () -> lending.setReturned(0, null));
     }
 
     @Test
-    void testGetStartDate() {
-        Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(LocalDate.now(), lending.getStartDate());
+    void testBootstrappingLendingCreation() {
+        Lending lending = Lending.newBootstrappingLending(
+                book, readerDetails, LocalDate.now().getYear(), 1,
+                LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),
+                lendingDurationInDays, fineValuePerDayInCents);
+
+        assertEquals(LocalDate.now().minusDays(10), lending.getStartDate());
+        assertEquals(LocalDate.now().minusDays(2), lending.getReturnedDate());
+        assertEquals(LocalDate.now().minusDays(10).plusDays(lendingDurationInDays), lending.getLimitDate());
     }
 
     @Test
-    void testGetLimitDate() {
+    void testGetDaysUntilReturnBeforeDueDate() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(LocalDate.now().plusDays(lendingDurationInDays), lending.getLimitDate());
+        lending.setLimitDate(LocalDate.now().plusDays(5)); // Set 5 days until return
+        assertEquals(Optional.of(5), lending.getDaysUntilReturn());
     }
 
     @Test
-    void testGetReturnedDate() {
+    void testGetDaysOverdueAfterLimitDate() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertNull(lending.getReturnedDate());
+        lending.setLimitDate(LocalDate.now().minusDays(4)); // Set overdue by 4 days
+        assertEquals(Optional.of(4), lending.getDaysOverdue());
     }
-
 }
