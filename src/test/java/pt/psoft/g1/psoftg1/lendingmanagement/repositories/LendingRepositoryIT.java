@@ -123,6 +123,20 @@ public class LendingRepositoryIT {
         assertThat(found.get().getLendingNumber()).isEqualTo(ln);
     }
 
+    // Teste de Caixa Preta para findByLendingNumber
+    @Test
+    public void whenLendingNumberExists_findByLendingNumberReturnsLending() {
+        String existingLendingNumber = lending.getLendingNumber();
+        Optional<Lending> lendingOpt = lendingRepository.findByLendingNumber(existingLendingNumber);
+        assertThat(lendingOpt).isPresent();
+    }
+
+    @Test
+    public void whenLendingNumberDoesNotExist_findByLendingNumberReturnsEmpty() {
+        Optional<Lending> lendingOpt = lendingRepository.findByLendingNumber("9999/12345");
+        assertThat(lendingOpt).isEmpty();
+    }
+
     @Test
     public void testListByReaderNumberAndIsbn() {
         List<Lending> lendings = lendingRepository.listByReaderNumberAndIsbn(lending.getReaderDetails().getReaderNumber(), lending.getBook().getIsbn());
@@ -147,6 +161,15 @@ public class LendingRepositoryIT {
         assertThat(count).isEqualTo(2);
     }
 
+    // Teste de Caixa Branca para getCountFromCurrentYear
+    @Test //da certo
+    public void getCountFromCurrentYearReturnsAccurateCountForCurrentYear() {
+        int currentYearCount = lendingRepository.getCountFromCurrentYear();
+        assertThat(currentYearCount).isEqualTo(1);  // Ajuste para o valor esperado no setup inicial
+        lendingRepository.save(Lending.newBootstrappingLending(book, readerDetails, LocalDate.now().getYear(), 1000, LocalDate.now(), null, 15, 300));
+        assertThat(lendingRepository.getCountFromCurrentYear()).isEqualTo(currentYearCount + 1);
+    }
+
     @Test
     public void testListOutstandingByReaderNumber() {
         var lending2 = Lending.newBootstrappingLending(book,
@@ -162,7 +185,7 @@ public class LendingRepositoryIT {
         assertThat(outstandingLendings).contains(lending2);
     }
 
-    @Test
+    @Test //da certo
     public void testGetAverageDuration() {
         double lendingDuration1 = ChronoUnit.DAYS.between(lending.getStartDate(), lending.getReturnedDate());
         Double averageDuration = lendingRepository.getAverageDuration();
@@ -194,6 +217,24 @@ public class LendingRepositoryIT {
         assertEquals(expectedAvg, lendingRepository.getAverageDuration(), 0.001);
 
     }
+/*
+    // Teste de Caixa Branca para getAverageDuration
+    @Test //da erro
+    public void givenMultipleLendings_getAverageDurationCalculatesCorrectly() {
+        // Adiciona empréstimos com durações de exemplo
+        Lending lending1 = lendingRepository.save(
+                Lending.newBootstrappingLending(book, readerDetails, 2024, 1001, LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 31), 15, 300) // Duração de 30 dias
+        );
+        Lending lending2 = lendingRepository.save(
+                Lending.newBootstrappingLending(book, readerDetails, 2024, 1002, LocalDate.of(2024, 2, 1), LocalDate.of(2024, 2, 15), 15, 300) // Duração de 14 dias
+        );
+
+        // Calcula a média esperada diretamente
+        double expectedAvgDuration = (30 + 14) / 2.0; // Média de 22.0 dias
+
+        // Valida a média de duração
+        assertEquals(expectedAvgDuration, lendingRepository.getAverageDuration());
+    }*/
 
     @Test
     public void testGetOverdue() {
@@ -227,4 +268,23 @@ public class LendingRepositoryIT {
         assertThat(overdueLendings).contains(notReturnedLending);
         assertThat(overdueLendings).doesNotContain(notReturnedAndNotOverdueLending);
     }
+
+    /*
+    // Teste de Caixa Preta para getOverdue
+    @Test
+    public void givenOverdueAndNonOverdueLendings_getOverdueReturnsOnlyOverdueLendings() {
+        Page page = new Page(1, 10);
+        var overdueLendings = lendingRepository.getOverdue(page);
+
+        overdueLendings.forEach(lending -> {
+            // Certifique-se de que a data de devolução é nula
+            assertThat(lending.getReturnedDate()).isNull();
+
+            // Calcule a data esperada de devolução
+            LocalDate expectedReturnDate = lending.getStartDate().plusDays(lending.getLendingPeriod());
+
+            // Verifique se a data esperada de devolução é anterior à data atual
+            assertThat(expectedReturnDate).isBefore(LocalDate.now());
+        });
+    }*/
 }
