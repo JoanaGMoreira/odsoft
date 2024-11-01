@@ -12,6 +12,8 @@ import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 
 import java.nio.file.InvalidPathException;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "READER_DETAILS")
@@ -167,4 +169,17 @@ public class ReaderDetails extends EntityWithPhoto {
     protected ReaderDetails() {
         // for ORM only
     }
+
+    public int getAge() {
+        if (this.birthDate != null) { // Verifique apenas se birthDate não é nulo
+            return Period.between(this.birthDate.getBirthDate(), LocalDate.now()).getYears(); // Use o getter getBirthDate()
+        }
+        throw new IllegalStateException("BirthDate não disponível para calcular idade.");
+    }
+
+    public Long getId() {
+        return this.pk;
+    }
+
+
 }

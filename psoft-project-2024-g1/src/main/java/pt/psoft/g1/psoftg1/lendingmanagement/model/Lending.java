@@ -57,6 +57,10 @@ public class Lending {
     @ManyToOne(fetch=FetchType.EAGER, optional = false)
     private Book book;
 
+    public Book getBooks() {
+        return this.book;
+    }
+
     /**
      * {@code Reader} associated with this {@code Lending}.
      **/

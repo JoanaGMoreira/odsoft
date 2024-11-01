@@ -30,6 +30,11 @@ import pt.psoft.g1.psoftg1.shared.services.SearchRequest;
 import pt.psoft.g1.psoftg1.usermanagement.model.Librarian;
 import pt.psoft.g1.psoftg1.usermanagement.model.User;
 import pt.psoft.g1.psoftg1.usermanagement.services.UserService;
+import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
+import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
+import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
+import pt.psoft.g1.psoftg1.lendingmanagement.model.RecomendationAlgs;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +50,8 @@ public class LendingController {
     private final ConcurrencyService concurrencyService;
 
     private final LendingViewMapper lendingViewMapper;
+    private final LendingRepository lendingRepository;
+
 
     @Operation(summary = "Creates a new Lending")
     @PostMapping
@@ -159,6 +166,46 @@ public class LendingController {
             @RequestBody final SearchRequest<SearchLendingQuery> request) {
         final var readerList = lendingService.searchLendings(request.getPage(), request.getQuery());
         return new ListResponse<>(lendingViewMapper.toLendingView(readerList));
+    }
+
+
+    // Novos Endpoints de Recomendação
+
+    @Operation(summary = "Recommends books based on the most requested genres")
+    @GetMapping("/recommend/mostRequestedGenres")
+    public ListResponse<Book> recommendMostRequestedGenres(
+            @RequestParam int numberOfBooks,
+            @RequestParam int numberOfGenres) {
+        List<Book> recommendedBooks = RecomendationAlgs.recommendMostRequestedGenres(
+                lendingRepository, numberOfBooks, numberOfGenres);
+        return new ListResponse<>(recommendedBooks);
+    }
+
+    @Operation(summary = "Recommends books based on reader's age group")
+    @GetMapping("/recommend/byAgeGroup")
+    public ListResponse<Book> recommendByAgeGroup(
+            Authentication authentication,
+            @RequestParam int numberOfBooks) {
+        User loggedUser = userService.getAuthenticatedUser(authentication);
+        ReaderDetails readerDetails = readerService.findByUsername(loggedUser.getUsername())
+                .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
+        List<Book> recommendedBooks = RecomendationAlgs.recommendByAgeGroup(
+                lendingRepository, readerDetails, numberOfBooks);
+        return new ListResponse<>(recommendedBooks);
+    }
+
+    @Operation(summary = "Recommends books for readers above 18 years with top genres")
+    @GetMapping("/recommend/byAgeGroupWithTopGenres")
+    public ListResponse<Book> recommendByAgeGroupWithTopGenres(
+            Authentication authentication,
+            @RequestParam int numberOfBooks,
+            @RequestParam int numberOfGenres) {
+        User loggedUser = userService.getAuthenticatedUser(authentication);
+        ReaderDetails readerDetails = readerService.findByUsername(loggedUser.getUsername())
+                .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
+        List<Book> recommendedBooks = RecomendationAlgs.recommendByAgeGroupWithTopGenres(
+                lendingRepository, readerDetails, numberOfBooks, numberOfGenres);
+        return new ListResponse<>(recommendedBooks);
     }
 
 /*    @Operation(summary = "Get list monthly average lendings per reader")

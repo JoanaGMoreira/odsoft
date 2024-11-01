@@ -1,6 +1,5 @@
 package pt.psoft.g1.psoftg1.readermanagement.model;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,15 +9,13 @@ import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDate;
 
-
 @Embeddable
 @NoArgsConstructor
 @PropertySource({"classpath:config/library.properties"})
 public class BirthDate {
     @Getter
     @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.DATE)
-    LocalDate birthDate;
+    private LocalDate birthDate; // Removido @Temporal
 
     @Transient
     private final String dateFormatRegexPattern = "\\d{4}-\\d{2}-\\d{2}";
@@ -32,7 +29,7 @@ public class BirthDate {
     }
 
     public BirthDate(String birthDate) {
-        if(!birthDate.matches(dateFormatRegexPattern)) {
+        if (!birthDate.matches(dateFormatRegexPattern)) {
             throw new IllegalArgumentException("Provided birth date is not in a valid format. Use yyyy-MM-dd");
         }
 
@@ -48,13 +45,14 @@ public class BirthDate {
     private void setBirthDate(int year, int month, int day) {
         LocalDate minimumAgeDate = LocalDate.now().minusYears(minimumAge);
         LocalDate userDate = LocalDate.of(year, month, day);
-        if(userDate.isAfter(minimumAgeDate)) {
-            throw new AccessDeniedException("User must be, at least, " + minimumAge + "years old");
+        if (userDate.isAfter(minimumAgeDate)) {
+            throw new AccessDeniedException("User must be, at least, " + minimumAge + " years old");
         }
 
         this.birthDate = userDate;
     }
 
+    @Override
     public String toString() {
         return String.format("%d-%d-%d", this.birthDate.getYear(), this.birthDate.getMonthValue(), this.birthDate.getDayOfMonth());
     }
