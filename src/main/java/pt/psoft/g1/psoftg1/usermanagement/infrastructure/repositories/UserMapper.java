@@ -16,6 +16,7 @@ public class UserMapper {
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
         userEntity.setVersion(user.getVersion());
+        user.getAuthorities().forEach(authority -> userEntity.addAuthority(authority));
         return userEntity;
     }
 
@@ -30,6 +31,7 @@ public class UserMapper {
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
         user.setVersion(userEntity.getVersion());
+        userEntity.getAuthorities().forEach(authority -> user.addAuthority(authority));
         return user;
     }
 }

@@ -18,7 +18,7 @@ public class ReaderDetailsEntity extends MySQLEntityWithPhoto {
 
     @Getter
     @Setter
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private ReaderEntity reader;
 
     @Getter

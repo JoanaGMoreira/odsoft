@@ -28,7 +28,7 @@ public class UserEntity {
 
     // database primary key
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
     @Column(name="USER_ID")
@@ -97,6 +97,9 @@ public class UserEntity {
     private final Set<Role> authorities = new HashSet<>();
 
 
+    public void addAuthority(final Role r) {
+        authorities.add(r);
+    }
 
     public UserEntity() {
         // for ORM only

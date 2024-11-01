@@ -51,7 +51,6 @@ public class UserBootstrapper implements CommandLineRunner {
             userRepository.save(manuel);
 
             //String dateFormat = LocalDateTime.of(LocalDate.of(2024, 1, 20), LocalTime.now()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-            String dateFormat = LocalDateTime.of(2024,1,20,0,0,0,0).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
             String query = String.format("UPDATE t_user SET created_at = CURRENT_TIMESTAMP WHERE username = '%s'", manuel.getUsername());
             
             //jdbcTemplate.update(query);
