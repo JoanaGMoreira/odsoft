@@ -43,7 +43,7 @@ public abstract class BookViewMapper extends MapperInterface {
     public Map<String, Object> mapLinks(final Book book) {
         String bookUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/books/")
-                .path(book.getIsbn())
+                .path(book.getStringIsbn())
                 .toUriString();
 
         Map<String, Object> links = new HashMap<>();
@@ -69,7 +69,7 @@ public abstract class BookViewMapper extends MapperInterface {
 
 
     protected String generatePhotoUrl(Book book) {
-        String isbn = book.getIsbn();
+        String isbn = book.getStringIsbn();
         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/books/{isbn}/photo").buildAndExpand(isbn).toUri().toString();
     }
 }

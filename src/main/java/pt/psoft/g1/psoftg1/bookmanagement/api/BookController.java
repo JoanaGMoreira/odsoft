@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Books", description = "Endpoints for managing Books")
 @RestController
 @RequestMapping("/api/books")
+@Profile("!mysql")
 public class BookController {
     private final BookService bookService;
     private final LendingService lendingService;
@@ -51,6 +54,7 @@ public class BookController {
     private final BookViewMapper bookViewMapper;
 
     @Autowired
+    @Lazy
     public BookController(BookService bookService, LendingService lendingService, ConcurrencyService concurrencyService, FileStorageService fileStorageService, UserService userService, ReaderService readerService, BookViewMapper bookViewMapper) {
         this.bookService = bookService;
         this.lendingService = lendingService;
@@ -85,7 +89,7 @@ public class BookController {
         }
         //final var savedBook = bookService.save(book);
         final var newBookUri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .pathSegment(book.getIsbn())
+                .pathSegment(book.getStringIsbn())
                 .build().toUri();
 
         return ResponseEntity.created(newBookUri)
@@ -116,7 +120,7 @@ public class BookController {
         }
 
         fileStorageService.deleteFile(book.getPhoto().getPhotoFile());
-        bookService.removeBookPhoto(book.getIsbn(), book.getVersion());
+        bookService.removeBookPhoto(book.getStringIsbn(), book.getVersion());
 
         return ResponseEntity.ok().build();
     }
@@ -230,7 +234,7 @@ public class BookController {
         ReaderDetails readerDetails = readerService.findByUsername(loggedUser.getUsername())
                 .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
 
-        return new ListResponse<>(bookViewMapper.toBookView(bookService.getBooksSuggestionsForReader(readerDetails.getReaderNumber())));
+        return new ListResponse<>(bookViewMapper.toBookView(bookService.getBooksSuggestionsForReader(readerDetails.getStringReaderNumber())));
     }
 
     @Operation(summary = "Get average lendings duration")

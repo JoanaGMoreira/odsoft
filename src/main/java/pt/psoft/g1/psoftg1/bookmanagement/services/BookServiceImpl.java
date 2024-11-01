@@ -2,6 +2,7 @@ package pt.psoft.g1.psoftg1.bookmanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public class BookServiceImpl implements BookService {
 	private long suggestionsLimitPerGenre;
 
 	@Autowired
+	@Lazy
 	public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository, PhotoRepository photoRepository, ReaderRepository readerRepository) {
 		this.bookRepository = bookRepository;
 		this.genreRepository = genreRepository;

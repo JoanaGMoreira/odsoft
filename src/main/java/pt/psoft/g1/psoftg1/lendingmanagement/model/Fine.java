@@ -1,7 +1,9 @@
 package pt.psoft.g1.psoftg1.lendingmanagement.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.Objects;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Objects;
  * This is the service layer model, without persistence annotations.
  */
 @Getter
+@NoArgsConstructor
 public class Fine {
 
     private int fineValuePerDayInCents;

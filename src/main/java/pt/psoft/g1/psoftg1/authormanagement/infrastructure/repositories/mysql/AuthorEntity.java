@@ -6,25 +6,23 @@ import lombok.Setter;
 import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MySQLEntityWithPhoto;
 import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.NameEntity;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "author")
 public class AuthorEntity extends MySQLEntityWithPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AUTHOR_NUMBER")
-    @Getter @Setter
     private Long authorNumber;
 
     @Version
-    @Getter @Setter
     private long version;
 
     @Embedded
-    @Getter @Setter
     private NameEntity name;
 
     @Embedded
-    @Getter @Setter
     private BioEntity bio;
 
 

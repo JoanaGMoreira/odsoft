@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
+import pt.psoft.g1.psoftg1.shared.services.PhotoMapper;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 import pt.psoft.g1.psoftg1.usermanagement.services.UserService;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Brief guide:
  * <a href="https://www.baeldung.com/mapstruct">https://www.baeldung.com/mapstruct</a>
  * */
-@Mapper(componentModel = "spring", uses = {ReaderService.class, UserService.class})
+@Mapper(componentModel = "spring", uses = {ReaderService.class, UserService.class, PhoneNumberMapper.class, BirthDateMapper.class, ReaderNumberMapper.class, PhotoMapper.class})
 public abstract class ReaderMapper {
 
     @Mapping(target = "username", source = "username")
@@ -24,4 +25,7 @@ public abstract class ReaderMapper {
     @Mapping(target = "photo", source = "photoURI")
     @Mapping(target = "interestList", source = "interestList")
     public abstract ReaderDetails createReaderDetails(int readerNumber, Reader reader, CreateReaderRequest request, String photoURI, List<Genre> interestList);
+
+
+
 }

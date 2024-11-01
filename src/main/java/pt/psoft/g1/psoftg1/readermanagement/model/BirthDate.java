@@ -4,6 +4,7 @@ package pt.psoft.g1.psoftg1.readermanagement.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,19 +12,15 @@ import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDate;
 
 
-@Embeddable
 @NoArgsConstructor
 @PropertySource({"classpath:config/library.properties"})
 public class BirthDate {
     @Getter
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.DATE)
+    @Setter
     LocalDate birthDate;
 
-    @Transient
     private final String dateFormatRegexPattern = "\\d{4}-\\d{2}-\\d{2}";
 
-    @Transient
     @Value("${minimumReaderAge}")
     private int minimumAge;
 

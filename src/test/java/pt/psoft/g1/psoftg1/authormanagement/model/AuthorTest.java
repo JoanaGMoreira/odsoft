@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
 import pt.psoft.g1.psoftg1.authormanagement.services.UpdateAuthorRequest;
-pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.EntityWithPhoto;
+import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
 import pt.psoft.g1.psoftg1.shared.model.Photo;
 
 
@@ -65,7 +65,7 @@ class AuthorTest {
     void testEntityWithPhotoSetPhotoInternalWithValidURI() {
         EntityWithPhoto entity = new EntityWithPhotoImpl();
         String validPhotoURI = "photoTest.jpg";
-        entity.setPhoto(validPhotoURI);
+        entity.setPhotoUri(validPhotoURI);
         assertNotNull(entity.getPhoto());
     }
 

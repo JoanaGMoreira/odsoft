@@ -2,6 +2,7 @@ package pt.psoft.g1.psoftg1.lendingmanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import pt.psoft.g1.psoftg1.bookmanagement.repositories.BookRepository;
@@ -34,6 +35,7 @@ public class LendingServiceImpl implements LendingService{
     private int fineValuePerDayInCents;
 
     @Autowired
+    @Lazy
     public LendingServiceImpl(LendingRepository lendingRepository, FineRepository fineRepository, BookRepository bookRepository, ReaderRepository readerRepository) {
         this.lendingRepository = lendingRepository;
         this.fineRepository = fineRepository;

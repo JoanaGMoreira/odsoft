@@ -32,6 +32,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
+import pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql.entities.UserEntity;
 import pt.psoft.g1.psoftg1.usermanagement.model.User;
 import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 
@@ -42,23 +43,23 @@ import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 @Repository
 @CacheConfig(cacheNames = "users")
 @Profile("mysql")
-public interface MysqlUserRepository extends UserRepository, UserRepoCustom, JpaRepository<User, Long> {
+public interface MysqlUserRepository extends JpaRepository<UserEntity, Long> {
 
 	@Override
 	@CacheEvict(allEntries = true)
-	<S extends User> List<S> saveAll(Iterable<S> entities);
+	<S extends UserEntity> List<S> saveAll(Iterable<S> entities);
 
 	@Override
 	@Caching(evict = { @CacheEvict(key = "#p0.id", condition = "#p0.id != null"),
 			@CacheEvict(key = "#p0.username", condition = "#p0.username != null") })
-	<S extends User> S save(S entity);
+	<S extends UserEntity> S save(S entity);
 
 	/**
 	 * findById searches a specific user and returns an optional
 	 */
 	@Override
 	@Cacheable
-	Optional<User> findById(Long objectId);
+	Optional<UserEntity> findById(Long objectId);
 
 	/**
 	 * getById explicitly loads a user or throws an exception if the user does not
@@ -68,16 +69,16 @@ public interface MysqlUserRepository extends UserRepository, UserRepoCustom, Jpa
 	 * @return
 	 */
 	@Cacheable
-	default User getById(final Long id) {
-		final Optional<User> maybeUser = findById(id);
+	default UserEntity getById(final Long id) {
+		final Optional<UserEntity> maybeUser = findById(id);
 		// throws 404 Not Found if the user does not exist or is not enabled
-		return maybeUser.filter(User::isEnabled).orElseThrow(() -> new NotFoundException(User.class, id));
+		return maybeUser.filter(UserEntity::isEnabled).orElseThrow(() -> new NotFoundException(User.class, id));
 	}
 
 	@Cacheable
-	Optional<User> findByUsername(String username);
+	Optional<UserEntity> findByUsername(String username);
 
 	@Cacheable
-	List<User> findByNameName(String name);
+	List<UserEntity> findByNameName(String name);
 }
 

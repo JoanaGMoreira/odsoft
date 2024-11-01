@@ -1,32 +1,22 @@
 package pt.psoft.g1.psoftg1.genremanagement.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Setter;
 
-@Entity
-@Document(collection = "genre")
-@Table
+
 public class Genre {
-    @Transient
-    private final int GENRE_MAX_LENGTH = 100;
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    long pk;
-
-    @Size(min = 1, max = GENRE_MAX_LENGTH, message = "Genre name must be between 1 and 100 characters")
-    @Column(unique=true, nullable=false, length = GENRE_MAX_LENGTH)
+    public static final int GENRE_MAX_LENGTH = 100;
     @Getter
+    @Setter
     String genre;
 
-    protected Genre(){}
+    public Genre(){}
 
     public Genre(String genre) {
-        setGenre(genre);
+        setStringGenre(genre);
     }
 
-    private void setGenre(String genre) {
+    private void setStringGenre(String genre) {
         if(genre == null)
             throw new IllegalArgumentException("Genre cannot be null");
         if(genre.isBlank())

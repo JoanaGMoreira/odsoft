@@ -2,14 +2,13 @@ package pt.psoft.g1.psoftg1.authormanagement.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pt.psoft.g1.psoftg1.shared.model.StringUtilsCustom;
 
+@Getter
 @NoArgsConstructor
 public class Bio {
     public static final int BIO_MAX_LENGTH = 4096;
 
-    @Getter @Setter
     private String bio;
 
     public Bio(String bio) {

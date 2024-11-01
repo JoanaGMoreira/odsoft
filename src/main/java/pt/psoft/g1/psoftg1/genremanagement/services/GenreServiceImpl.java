@@ -1,6 +1,7 @@
 package pt.psoft.g1.psoftg1.genremanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
     @Autowired
+    @Lazy
     public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }

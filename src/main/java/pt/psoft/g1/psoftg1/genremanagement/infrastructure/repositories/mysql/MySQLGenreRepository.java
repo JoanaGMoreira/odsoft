@@ -10,28 +10,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.bookmanagement.services.GenreBookCountDTO;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
-import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
+import pt.psoft.g1.psoftg1.bookmanagement.services.GenreBookCountDTO;
 
 import java.util.*;
 
 @Repository
 @Profile("mysql")
-public interface MySQLGenreRepository extends GenreRepository, GenreRepoCustom, JpaRepository<Genre, Integer> {
+public interface MySQLGenreRepository extends JpaRepository<GenreEntity, Integer> {
 
-    @Query("SELECT g FROM Genre g")
-    List<Genre> findAllGenres();
+    @Query("SELECT g FROM GenreEntity g")
+    List<GenreEntity> findAllGenres();
 
-    @Override
-    @Query("SELECT g FROM Genre g WHERE g.genre = :genreName" )
-    Optional<Genre> findByString(@Param("genreName")@NotNull String genre);
+    @Query("SELECT g FROM GenreEntity g WHERE g.genre = :genreName" )
+    Optional<GenreEntity> findByString(@Param("genreName")@NotNull String genre);
 
-    @Override
-    @Query("SELECT new pt.psoft.g1.psoftg1.bookmanagement.services.GenreBookCountDTO(g.genre, COUNT(b))" +
-            "FROM Genre g " +
-            "JOIN Book b ON b.genre.pk = g.pk " +
-            "GROUP BY g " +
-            "ORDER BY COUNT(b) DESC")
-    Page<GenreBookCountDTO> findTop5GenreByBookCount(Pageable pageable);
+//    @Query("SELECT new GenreBookCountDTO(g.genre, COUNT(b))" +
+//            "FROM GenreEntity g " +
+//            "JOIN BookEntity b ON b.genre.pk = g.pk " +
+//            "GROUP BY g " +
+//            "ORDER BY COUNT(b) DESC")
+//    Page<GenreBookCountDTO> findTop5GenreByBookCount(Pageable pageable);
 }
 
 

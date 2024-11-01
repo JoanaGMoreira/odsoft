@@ -20,21 +20,14 @@
  */
 package pt.psoft.g1.psoftg1.usermanagement.model;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,50 +36,34 @@ import pt.psoft.g1.psoftg1.shared.model.Name;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Based on https://github.com/Yoh0xFF/java-spring-security-example
- *
- */
-@Entity
-@Document(collection = "users")
-@Table(name = "T_USER")
-@EntityListeners(AuditingEntityListener.class)
+
 public class User implements UserDetails {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	// database primary key
-	@Id
-	@GeneratedValue
+	@Setter
 	@Getter
-	@Column(name="USER_ID")
 	private Long id;
 
-	// optimistic lock concurrency control
-	@Version
+	@Setter
+	@Getter
 	private Long version;
 
-	// auditing info
-	@CreatedDate
-	@Column(nullable = false, updatable = false)
+	@Setter
 	@Getter
 	private LocalDateTime createdAt;
 
-	// auditing info
-	@LastModifiedDate
-	@Column(nullable = false)
+	@Setter
 	@Getter
 	private LocalDateTime modifiedAt;
 
-	// auditing info
-	@CreatedBy
-	@Column(nullable = false, updatable = false)
+	@Setter
 	@Getter
 	private String createdBy;
 
-	// auditing info
-	@LastModifiedBy
-	@Column(nullable = false)
+	@Setter
+	@Getter
 	private String modifiedBy;
 
 	@Setter
@@ -94,29 +71,23 @@ public class User implements UserDetails {
 	private boolean enabled = true;
 
 	@Setter
-    @Column(unique = true, /*updatable = false,*/ nullable = false)
-	@Email
 	@Getter
 	@NotNull
 	@NotBlank
 	private String username;
 
-	@Column(nullable = false)
 	@Getter
 	@NotNull
 	@NotBlank
 	private String password;
 
 	@Getter
-//	@Setter
-	@Embedded
 	private Name name;
 
-	@ElementCollection
 	@Getter
 	private final Set<Role> authorities = new HashSet<>();
 
-	protected User() {
+	public User() {
 		// for ORM only
 	}
 

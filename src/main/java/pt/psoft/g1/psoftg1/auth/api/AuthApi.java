@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.joining;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,7 @@ public class AuthApi {
 	private final UserService userService;
 
 	@Autowired
+	@Lazy
 	public AuthApi(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, UserViewMapper userViewMapper, UserService userService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtEncoder = jwtEncoder;

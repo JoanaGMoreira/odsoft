@@ -1,6 +1,7 @@
-package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql;
+package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,22 +18,19 @@ public class FineEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pk;
 
-    @Column(name = "fine_value_per_day_in_cents", updatable = false)
+    @PositiveOrZero
+    @Column(updatable = false)
     private int fineValuePerDayInCents;
 
-    @Column(name = "cents_value")
-    private int centsValue;
+    /**Fine value in Euro cents*/
+    @PositiveOrZero
+    int centsValue;
 
+    @Setter
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "lending_pk", nullable = false, unique = true)
     private LendingEntity lending;
 
     // Protected constructor for JPA
-    protected FineEntity() {}
-
-    public FineEntity(int fineValuePerDayInCents, int centsValue, LendingEntity lending) {
-        this.fineValuePerDayInCents = fineValuePerDayInCents;
-        this.centsValue = centsValue;
-        this.lending = lending;
-    }
+    public FineEntity() {}
 }

@@ -5,57 +5,53 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.entities.LendingEntity;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
-import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
-
+import pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql.BookEntity;
+import pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql.entities.ReaderDetailsEntity;
 import java.util.*;
 
 @Repository
 @Profile("mysql")
-public interface MySQLLendingRepository extends LendingRepository, LendingRepoCustom, JpaRepository<Lending, Long> {
-    @Override
+public interface MySQLLendingRepository extends JpaRepository<LendingEntity, Long> {
+
     @Query("SELECT l " +
             "FROM LendingEntity l " +
             "WHERE l.lendingNumber.lendingNumber = :lendingNumber")
-    Optional<Lending> findByLendingNumber(String lendingNumber);
+    Optional<LendingEntity> findByLendingNumber(String lendingNumber);
 
     //http://www.h2database.com/html/commands.html
 
-    @Override
     @Query("SELECT l " +
             "FROM LendingEntity l " +
-            "JOIN Book b ON l.book.pk = b.pk " +
-            "JOIN ReaderDetails r ON l.readerDetails.pk = r.pk " +
+            "JOIN BookEntity b ON l.book.pk = b.pk " +
+            "JOIN ReaderDetailsEntity r ON l.readerDetails.pk = r.pk " +
             "WHERE b.isbn.isbn = :isbn " +
             "AND r.readerNumber.readerNumber = :readerNumber ")
-    List<Lending> listByReaderNumberAndIsbn(String readerNumber, String isbn);
+    List<LendingEntity> listByReaderNumberAndIsbn(String readerNumber, String isbn);
 
-    @Override
     @Query("SELECT COUNT (l) " +
             "FROM LendingEntity l " +
             "WHERE YEAR(l.startDate) = YEAR(CURRENT_DATE)")
     int getCountFromCurrentYear();
 
-    @Override
     @Query("SELECT l " +
             "FROM LendingEntity l " +
-                "JOIN ReaderDetails r ON l.readerDetails.pk = r.pk " +
+                "JOIN ReaderDetailsEntity r ON l.readerDetails.pk = r.pk " +
             "WHERE r.readerNumber.readerNumber = :readerNumber " +
                 "AND l.returnedDate IS NULL")
-    List<Lending> listOutstandingByReaderNumber(@Param("readerNumber") String readerNumber);
+    List<LendingEntity> listOutstandingByReaderNumber(@Param("readerNumber") String readerNumber);
 
-    @Override
     @Query(value =
             "SELECT AVG(DATEDIFF(day, l.start_date, l.returned_date)) " +
-            "FROM Lending l"
+            "FROM LendingEntity l"
             , nativeQuery = true)
     Double getAverageDuration();
 
-    @Override
     @Query(value =
             "SELECT AVG(DATEDIFF(day, l.start_date, l.returned_date)) " +
-                    "FROM Lending l " +
-                    "JOIN BOOK b ON l.BOOK_PK = b.PK " +
+                    "FROM LendingEntity l " +
+                    "JOIN BookEntity b ON l.BOOK_PK = b.PK " +
                     "WHERE b.ISBN = :isbn"
             , nativeQuery = true)
     Double getAvgLendingDurationByIsbn(@Param("isbn") String isbn);

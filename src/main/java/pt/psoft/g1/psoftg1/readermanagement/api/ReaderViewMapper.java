@@ -47,7 +47,7 @@ public abstract class ReaderViewMapper extends MapperInterface {
 
 
     protected String generatePhotoUrl(ReaderDetails readerDetails) {
-        String readerNumber = readerDetails.getReaderNumber();
+        String readerNumber = readerDetails.getStringReaderNumber();
         String[] readerNumberSplit = readerNumber.split("/");
         int year = Integer.parseInt(readerNumberSplit[0]);
         int seq = Integer.parseInt(readerNumberSplit[1]);

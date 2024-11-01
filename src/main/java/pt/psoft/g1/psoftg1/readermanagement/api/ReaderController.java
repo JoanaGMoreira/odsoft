@@ -11,6 +11,8 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,6 +53,7 @@ import java.util.Optional;
 @Tag(name = "Readers", description = "Endpoints to manage readers")
 @RestController
 @RequestMapping("/api/readers")
+@Profile("!mysql")
 class ReaderController {
     private final ReaderService readerService;
     private final UserService userService;
@@ -62,6 +65,7 @@ class ReaderController {
     private final ApiNinjasService apiNinjasService;
 
     @Autowired
+    @Lazy
     public ReaderController(ReaderService readerService, UserService userService, ReaderViewMapper readerViewMapper, LendingService lendingService, LendingViewMapper lendingViewMapper, ConcurrencyService concurrencyService, FileStorageService fileStorageService, ApiNinjasService apiNinjasService) {
         this.readerService = readerService;
         this.userService = userService;
@@ -74,7 +78,7 @@ class ReaderController {
     }
 
     @Autowired
-
+    @Lazy
 
     @Operation(summary = "Gets the reader data if authenticated as Reader or all readers if authenticated as Librarian")
     @ApiResponse(description = "Success", responseCode = "200", content = { @Content(mediaType = "application/json",
@@ -174,7 +178,7 @@ class ReaderController {
                     .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
 
             //if logged Reader matches the one associated with the lending, skip ahead
-            if (!loggedReaderDetails.getReaderNumber().equals(year + "/" + seq)) {
+            if (!loggedReaderDetails.getStringReaderNumber().equals(year + "/" + seq)) {
                 throw new AccessDeniedException("Reader does not have permission to view another reader's photo");
             }
         }
@@ -239,7 +243,7 @@ class ReaderController {
         ReaderDetails readerDetails = readerService.create(readerRequest, fileName);
 
         final var newReaderUri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .pathSegment(readerDetails.getReaderNumber())
+                .pathSegment(readerDetails.getStringReaderNumber())
                 .build().toUri();
 
         return ResponseEntity.created(newReaderUri)
@@ -264,7 +268,7 @@ class ReaderController {
         }
 
         this.fileStorageService.deleteFile(readerDetails.getPhoto().getPhotoFile());
-        readerService.removeReaderPhoto(readerDetails.getReaderNumber(), readerDetails.getVersion());
+        readerService.removeReaderPhoto(readerDetails.getStringReaderNumber(), readerDetails.getVersion());
 
         return ResponseEntity.ok().build();
     }
@@ -326,7 +330,7 @@ class ReaderController {
                     .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
 
             //if logged Reader matches the one associated with the lendings, skip ahead
-            if(!Objects.equals(loggedReaderDetails.getReaderNumber(), urlReaderDetails.getReaderNumber())){
+            if(!Objects.equals(loggedReaderDetails.getStringReaderNumber(), urlReaderDetails.getStringReaderNumber())){
                 throw new AccessDeniedException("Reader does not have permission to view these lendings");
             }
         }

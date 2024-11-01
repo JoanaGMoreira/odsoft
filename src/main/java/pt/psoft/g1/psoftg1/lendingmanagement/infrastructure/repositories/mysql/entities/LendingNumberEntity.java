@@ -1,4 +1,4 @@
-package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql;
+package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
@@ -24,23 +24,6 @@ public class LendingNumberEntity implements Serializable {
     @NotBlank
     @Size(min = 6, max = 32)
     private String lendingNumber;
-
-    /**
-     * Constructs a new {@code MySQLLendingNumberEntity} based on a lending number string.
-     * @param lendingNumber formatted as "{year}/{sequential}".
-     */
-    public LendingNumberEntity(String lendingNumber) {
-        this.lendingNumber = lendingNumber;
-    }
-
-    /**
-     * Sets the lending number based on the year and sequential values.
-     * @param year        Year component of the lending number.
-     * @param sequential  Sequential component of the lending number.
-     */
-    public void setLendingNumber(int year, int sequential) {
-        this.lendingNumber = year + "/" + sequential;
-    }
 
     @Override
     public String toString() {

@@ -63,7 +63,7 @@ class TitleTest {
     @Test
     void ensureTitleIsChanged() {
         final var title = new Title("Some title");
-        title.setTitle("Some other title");
+        title.setStringTitle("Some other title");
         assertEquals("Some other title", title.toString());
     }
     @Test
@@ -77,7 +77,7 @@ class TitleTest {
     void ensureTitleCanBeChanged() {
         //Verifica que o título pode ser alterado
         Title title = new Title("Original Title");
-        title.setTitle("Changed Title");
+        title.setStringTitle("Changed Title");
         assertEquals("Changed Title", title.toString());
     }
 
@@ -85,14 +85,14 @@ class TitleTest {
     void ensureTitleCannotBeSetToNull() {
         //Verifica que não é possível definir o título como nulo
         Title title = new Title("Initial Title");
-        assertThrows(IllegalArgumentException.class, () -> title.setTitle(null));
+        assertThrows(IllegalArgumentException.class, () -> title.setStringTitle(null));
     }
 
     @Test
     void ensureTitleCannotBeSetToBlank() {
         //Verificaque não é possível definir o título como em branco
         Title title = new Title("Initial Title");
-        assertThrows(IllegalArgumentException.class, () -> title.setTitle(""));
+        assertThrows(IllegalArgumentException.class, () -> title.setStringTitle(""));
     }
 
     @Test
@@ -100,14 +100,14 @@ class TitleTest {
         //Verifica que não é possível definir um título muito longo
         Title title = new Title("Initial Title");
         String longTitle = "A".repeat(129); // 129 caracteres
-        assertThrows(IllegalArgumentException.class, () -> title.setTitle(longTitle));
+        assertThrows(IllegalArgumentException.class, () -> title.setStringTitle(longTitle));
     }
 
     @Test
     void ensureTitleIsTrimmedWhenSet() {
         //Verifica que espaços em branco são removidos ao definir
         Title title = new Title(" Initial Title ");
-        title.setTitle("   New Title   ");
+        title.setStringTitle("   New Title   ");
         assertEquals("New Title", title.toString());
     }
 

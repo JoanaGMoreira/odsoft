@@ -1,5 +1,6 @@
 package pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.ForbiddenNameMapper;
@@ -15,7 +16,7 @@ public class MysqlForbiddenNameRepositoryImpl implements ForbiddenNameRepository
 
     private final MysqlForbiddenNameRepository mysqlRepository;
 
-    public MysqlForbiddenNameRepositoryImpl(MysqlForbiddenNameRepository mysqlRepository) {
+    public MysqlForbiddenNameRepositoryImpl(@Lazy MysqlForbiddenNameRepository mysqlRepository) {
         this.mysqlRepository = mysqlRepository;
     }
 

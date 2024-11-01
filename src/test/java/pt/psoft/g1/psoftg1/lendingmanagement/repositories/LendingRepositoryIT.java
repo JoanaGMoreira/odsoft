@@ -112,21 +112,21 @@ public class LendingRepositoryIT {
         Lending newLending = new Lending(lending.getBook(), lending.getReaderDetails(), 2, 14, 50);
         Lending savedLending = lendingRepository.save(newLending);
         assertThat(savedLending).isNotNull();
-        assertThat(savedLending.getLendingNumber()).isEqualTo(newLending.getLendingNumber());
+        assertThat(savedLending.getStringLendingNumber()).isEqualTo(newLending.getStringLendingNumber());
         lendingRepository.delete(savedLending);
     }
 
     @Test
     public void testFindByLendingNumber() {
-        String ln = lending.getLendingNumber();
+        String ln = lending.getStringLendingNumber();
         Optional<Lending> found = lendingRepository.findByLendingNumber(ln);
         assertThat(found).isPresent();
-        assertThat(found.get().getLendingNumber()).isEqualTo(ln);
+        assertThat(found.get().getStringLendingNumber()).isEqualTo(ln);
     }
 
     @Test
     public void testListByReaderNumberAndIsbn() {
-        List<Lending> lendings = lendingRepository.listByReaderNumberAndIsbn(lending.getReaderDetails().getReaderNumber(), lending.getBook().getIsbn());
+        List<Lending> lendings = lendingRepository.listByReaderNumberAndIsbn(lending.getReaderDetails().getStringReaderNumber(), lending.getBook().getStringIsbn());
         assertThat(lendings).isNotEmpty();
         assertThat(lendings).contains(lending);
     }
@@ -159,7 +159,7 @@ public class LendingRepositoryIT {
                 15,
                 300);
         lendingRepository.save(lending2);
-        List<Lending> outstandingLendings = lendingRepository.listOutstandingByReaderNumber(lending.getReaderDetails().getReaderNumber());
+        List<Lending> outstandingLendings = lendingRepository.listOutstandingByReaderNumber(lending.getReaderDetails().getStringReaderNumber());
         assertThat(outstandingLendings).contains(lending2);
     }
 

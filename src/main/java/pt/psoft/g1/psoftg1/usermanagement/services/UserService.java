@@ -21,6 +21,7 @@
 package pt.psoft.g1.psoftg1.usermanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,6 +58,7 @@ public class UserService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
+	@Lazy
 	public UserService(UserRepository userRepo, EditUserMapper userEditMapper, ForbiddenNameRepository forbiddenNameRepository, PasswordEncoder passwordEncoder) {
 		this.userRepo = userRepo;
 		this.userEditMapper = userEditMapper;

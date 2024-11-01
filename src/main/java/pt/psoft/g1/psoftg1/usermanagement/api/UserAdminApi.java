@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 import pt.psoft.g1.psoftg1.shared.api.ListResponse;
 import pt.psoft.g1.psoftg1.shared.services.SearchRequest;
@@ -44,6 +45,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/admin/users")
 @RolesAllowed(Role.ADMIN)
+@Profile("!mysql")
 public class UserAdminApi {
 
 	private final UserService userService;

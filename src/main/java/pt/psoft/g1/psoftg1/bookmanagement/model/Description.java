@@ -1,28 +1,25 @@
 package pt.psoft.g1.psoftg1.bookmanagement.model;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pt.psoft.g1.psoftg1.shared.model.StringUtilsCustom;
 
-@Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
 public class Description {
-    @Transient
-    private final int DESC_MAX_LENGTH = 4096;
 
-    @Size(max = DESC_MAX_LENGTH)
-    @Column(length = DESC_MAX_LENGTH)
+    public static final int DESC_MAX_LENGTH = 4096;
+
     String description;
 
     public Description(String description) {
-        setDescription(description);
+        setStringDescription(description);
     }
 
-    protected Description() {}
-
-    public void setDescription(@Nullable String description) {
+    public void setStringDescription(@Nullable String description) {
         if(description == null || description.isBlank()) {
             this.description = null;
         }else if(description.length() > DESC_MAX_LENGTH) {

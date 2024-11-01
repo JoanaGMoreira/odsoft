@@ -92,13 +92,13 @@ class LendingTest {
     @Test
     void testGetTitle() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals("O Inspetor Max", lending.getTitle());
+        assertEquals("O Inspetor Max", lending.getStringTitle());
     }
 
     @Test
     void testGetLendingNumber() {
         Lending lending = new Lending(book, readerDetails, 1, lendingDurationInDays, fineValuePerDayInCents);
-        assertEquals(LocalDate.now().getYear() + "/1", lending.getLendingNumber());
+        assertEquals(LocalDate.now().getYear() + "/1", lending.getStringLendingNumber());
     }
 
     @Test

@@ -6,30 +6,36 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+import pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql.BookEntity;
+import pt.psoft.g1.psoftg1.bookmanagement.services.GenreBookCountDTO;
+import pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.GenreMapper;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
+import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 import pt.psoft.g1.psoftg1.genremanagement.services.GenreLendingsDTO;
 import pt.psoft.g1.psoftg1.genremanagement.services.GenreLendingsPerMonthDTO;
-import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.entities.LendingEntity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
-class GenreRepoCustomImpl implements GenreRepoCustom {
+@Repository
+class GenreRepoCustomImpl implements GenreRepository {
 
     private final EntityManager entityManager;
+    private final MySQLGenreRepository mySQLGenreRepository;
+
 
     @Override
     public List<GenreLendingsPerMonthDTO> getLendingsPerMonthLastYearByGenre() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
-        Root<Lending> lendingRoot = cq.from(Lending.class);
-        Join<Lending, Book> bookJoin = lendingRoot.join("book");
-        Join<Book, Genre> genreJoin = bookJoin.join("genre");
+        Root<LendingEntity> lendingRoot = cq.from(LendingEntity.class);
+        Join<LendingEntity, BookEntity> bookJoin = lendingRoot.join("book");
+        Join<BookEntity, GenreEntity> genreJoin = bookJoin.join("genre");
 
         Expression<Integer> year = cb.function("YEAR", Integer.class, lendingRoot.get("startDate"));
         Expression<Integer> month = cb.function("MONTH", Integer.class, lendingRoot.get("startDate"));
@@ -73,6 +79,26 @@ class GenreRepoCustomImpl implements GenreRepoCustom {
 
 
     @Override
+    public List<Genre> findAll() {
+        return mySQLGenreRepository.findAll().stream().map(GenreMapper::toModel).toList();
+    }
+
+    @Override
+    public Optional<Genre> findByString(String genreName) {
+        return mySQLGenreRepository.findByString(genreName).map(GenreMapper::toModel);
+    }
+
+    @Override
+    public Genre save(Genre genre) {
+        return GenreMapper.toModel(mySQLGenreRepository.save(GenreMapper.toEntity(genre)));
+    }
+
+    @Override
+    public Page<GenreBookCountDTO> findTop5GenreByBookCount(Pageable pageable) {
+        return null;
+    }
+
+    @Override
     public List<GenreLendingsDTO> getAverageLendingsInMonth(LocalDate month, pt.psoft.g1.psoftg1.shared.services.Page page) {
         int days = month.lengthOfMonth();
         LocalDate firstOfMonth = LocalDate.of(month.getYear(), month.getMonth(), 1);
@@ -81,9 +107,9 @@ class GenreRepoCustomImpl implements GenreRepoCustom {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<GenreLendingsDTO> cq = cb.createQuery(GenreLendingsDTO.class);
 
-        Root<Lending> lendingRoot = cq.from(Lending.class);
-        Join<Lending, Book> bookJoin = lendingRoot.join("book", JoinType.LEFT);
-        Join<Book, Genre> genreJoin = bookJoin.join("genre", JoinType.LEFT);
+        Root<LendingEntity> lendingRoot = cq.from(LendingEntity.class);
+        Join<LendingEntity, BookEntity> bookJoin = lendingRoot.join("book", JoinType.LEFT);
+        Join<BookEntity, GenreEntity> genreJoin = bookJoin.join("genre", JoinType.LEFT);
 
         Expression<Long> loanCount = cb.count(lendingRoot.get("pk"));
         Expression<Number> dailyAvgLoans = cb.quot(cb.toDouble(loanCount), cb.literal(days));
@@ -110,9 +136,9 @@ class GenreRepoCustomImpl implements GenreRepoCustom {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Lending> lendingRoot = cq.from(Lending.class);
-        Join<Lending, Book> bookJoin = lendingRoot.join("book");
-        Join<Book, Genre> genreJoin = bookJoin.join("genre");
+        Root<LendingEntity> lendingRoot = cq.from(LendingEntity.class);
+        Join<LendingEntity, BookEntity> bookJoin = lendingRoot.join("book");
+        Join<BookEntity, GenreEntity> genreJoin = bookJoin.join("genre");
 
         Expression<Integer> yearExpr = cb.function("YEAR", Integer.class, lendingRoot.get("startDate"));
         Expression<Integer> monthExpr = cb.function("MONTH", Integer.class, lendingRoot.get("startDate"));
@@ -149,6 +175,12 @@ class GenreRepoCustomImpl implements GenreRepoCustom {
         }
 
         return getGenreLendingsPerMonthDtos(groupedResults);
+    }
+
+    @Override
+    public void delete(Genre genre) {
+        mySQLGenreRepository.delete(GenreMapper.toEntity(genre));
+
     }
 
     @NotNull

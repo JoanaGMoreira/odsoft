@@ -4,21 +4,58 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.LendingMapper;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
+import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.shared.services.Page;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
-class LendingRepoCustomImpl implements LendingRepoCustom {
+@Repository
+class LendingRepoCustomImpl implements LendingRepository {
     // get the underlying JPA Entity Manager via spring thru constructor dependency
     // injection
     private final EntityManager em;
+    private final MySQLLendingRepository mySQLLendingRepository;
+
+
+    @Override
+    public Optional<Lending> findByLendingNumber(String lendingNumber) {
+        return mySQLLendingRepository.findByLendingNumber(lendingNumber).map(LendingMapper::toModel);
+    }
+
+    @Override
+    public List<Lending> listByReaderNumberAndIsbn(String readerNumber, String isbn) {
+        return mySQLLendingRepository.listByReaderNumberAndIsbn(readerNumber, isbn).stream().map(LendingMapper::toModel).toList();
+    }
+
+    @Override
+    public int getCountFromCurrentYear() {
+        return mySQLLendingRepository.getCountFromCurrentYear();
+    }
+
+    @Override
+    public List<Lending> listOutstandingByReaderNumber(String readerNumber) {
+        return mySQLLendingRepository.listOutstandingByReaderNumber(readerNumber).stream().map(LendingMapper::toModel).toList();
+    }
+
+    @Override
+    public Double getAverageDuration() {
+        return mySQLLendingRepository.getAverageDuration();
+    }
+
+    @Override
+    public Double getAvgLendingDurationByIsbn(String isbn) {
+        return mySQLLendingRepository.getAvgLendingDurationByIsbn(isbn);
+    }
 
     @Override
     public List<Lending> getOverdue(Page page) {
@@ -78,6 +115,16 @@ class LendingRepoCustomImpl implements LendingRepoCustom {
         q.setMaxResults(page.getLimit());
 
         return q.getResultList();
+    }
+
+    @Override
+    public Lending save(Lending lending) {
+        return null;
+    }
+
+    @Override
+    public void delete(Lending lending) {
+
     }
 
 /*

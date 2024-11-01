@@ -3,7 +3,6 @@ package pt.psoft.g1.psoftg1.bookmanagement.model;
 import org.junit.jupiter.api.BeforeEach;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
@@ -35,7 +34,7 @@ class BookTest {
         // valida que o livro é criado corretamente com dados válidos
         Book book = new Book(validIsbn, validTitle, "Descrição sobre o livro.", validGenre, authors, "photoURI");
 
-        assertEquals(validIsbn, book.getIsbn());
+        assertEquals(validIsbn, book.getStringIsbn());
         assertEquals(validTitle, book.getTitle());
         assertEquals(validGenre, book.getGenre());
         assertEquals(authors, book.getAuthors());
@@ -120,6 +119,6 @@ class BookTest {
         //verifica se um livro pode ser criado sem descrição
         Book book = new Book(validIsbn, validTitle, "", validGenre, authors, null);
 
-        assertEquals("", book.getDescription());  // Deve permitir descrição vazia
+        assertEquals("", book.getStringDescription());  // Deve permitir descrição vazia
     }
 }

@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ import java.util.Objects;
 @Tag(name = "Lendings", description = "Endpoints for managing Lendings")
 @RestController
 @RequestMapping("/api/lendings")
+@Profile("!mysql")
 public class LendingController {
     private final LendingService lendingService;
     private final ReaderService readerService;
@@ -45,6 +48,7 @@ public class LendingController {
     private final LendingViewMapper lendingViewMapper;
 
     @Autowired
+    @Lazy
     public LendingController(LendingService lendingService, ReaderService readerService, UserService userService, ConcurrencyService concurrencyService, LendingViewMapper lendingViewMapper) {
         this.lendingService = lendingService;
         this.readerService = readerService;
@@ -62,7 +66,7 @@ public class LendingController {
         final var lending = lendingService.create(resource);
 
         final var newlendingUri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .pathSegment(lending.getLendingNumber())
+                .pathSegment(lending.getStringLendingNumber())
                 .build().toUri();
 
         return ResponseEntity.created(newlendingUri)
@@ -94,7 +98,7 @@ public class LendingController {
                     .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
 
             //if logged Reader matches the one associated with the lending, skip ahead
-            if (!Objects.equals(loggedReaderDetails.getReaderNumber(), lending.getReaderDetails().getReaderNumber())) {
+            if (!Objects.equals(loggedReaderDetails.getStringReaderNumber(), lending.getReaderDetails().getStringReaderNumber())) {
                 throw new AccessDeniedException("Reader does not have permission to view this lending");
             }
         }
@@ -134,7 +138,7 @@ public class LendingController {
                 .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
 
         //if logged Reader matches the one associated with the lending, skip ahead
-        if (!Objects.equals(loggedReaderDetails.getReaderNumber(), maybeLending.getReaderDetails().getReaderNumber())) {
+        if (!Objects.equals(loggedReaderDetails.getStringReaderNumber(), maybeLending.getReaderDetails().getStringReaderNumber())) {
             throw new AccessDeniedException("Reader does not have permission to edit this lending");
         }
 

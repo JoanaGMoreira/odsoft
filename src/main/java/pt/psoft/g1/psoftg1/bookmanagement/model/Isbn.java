@@ -1,20 +1,18 @@
 package pt.psoft.g1.psoftg1.bookmanagement.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 
-@Embeddable
-@EqualsAndHashCode
+@Getter
+@Setter
+@NoArgsConstructor
 public class Isbn implements Serializable {
-    @Size(min = 10, max = 13)
-    @Column(name="ISBN", length = 16)
 
-    String isbn;
+    private String isbn;
 
     public Isbn(String isbn) {
         if (isValidIsbn(isbn)) {
@@ -23,8 +21,6 @@ public class Isbn implements Serializable {
             throw new IllegalArgumentException("Invalid ISBN-13 format or check digit.");
         }
     }
-
-    protected Isbn() {};
 
     private static boolean isValidIsbn(String isbn) {
         if(isbn == null)

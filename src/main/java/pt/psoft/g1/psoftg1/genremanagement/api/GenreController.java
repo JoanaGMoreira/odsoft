@@ -3,6 +3,8 @@ package pt.psoft.g1.psoftg1.genremanagement.api;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
 import pt.psoft.g1.psoftg1.genremanagement.services.GenreService;
@@ -13,11 +15,13 @@ import pt.psoft.g1.psoftg1.shared.services.SearchRequest;
 @Tag(name = "Genres", description = "Endpoints for managing Genres")
 @RestController
 @RequestMapping("/api/genres")
+@Profile("!mysql")
 public class GenreController {
     private final GenreService genreService;
     private final GenreViewMapper genreViewMapper;
 
     @Autowired
+    @Lazy
     public GenreController(GenreService genreService, GenreViewMapper genreViewMapper) {
         this.genreService = genreService;
         this.genreViewMapper = genreViewMapper;

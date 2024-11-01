@@ -1,6 +1,7 @@
 package pt.psoft.g1.psoftg1.authormanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final PhotoRepository photoRepository;
 
     @Autowired
+    @Lazy
     public AuthorServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository, AuthorMapper mapper, PhotoRepository photoRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
