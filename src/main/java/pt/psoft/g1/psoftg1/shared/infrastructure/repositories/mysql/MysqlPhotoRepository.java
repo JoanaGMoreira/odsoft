@@ -1,11 +1,12 @@
 package pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import pt.psoft.g1.psoftg1.shared.repositories.PhotoRepository;
 
+@Profile("mysql")
 public interface MysqlPhotoRepository extends JpaRepository<PhotoEntity, Long> {
     /*@Override
     @Query("SELECT p " +

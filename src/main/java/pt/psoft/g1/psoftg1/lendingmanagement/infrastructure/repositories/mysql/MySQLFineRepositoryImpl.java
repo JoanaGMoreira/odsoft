@@ -1,6 +1,8 @@
 package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.FineMapper;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Fine;
 import pt.psoft.g1.psoftg1.lendingmanagement.repositories.FineRepository;
@@ -8,10 +10,15 @@ import pt.psoft.g1.psoftg1.lendingmanagement.repositories.FineRepository;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-public class MySQLLendingRepositoryImpl implements FineRepository {
+@Repository
+public class MySQLFineRepositoryImpl implements FineRepository {
 
     private final MySQLFineRepository mySQLFineRepository;
+
+    @Autowired
+    public MySQLFineRepositoryImpl(@Lazy MySQLFineRepository mySQLFineRepository) {
+        this.mySQLFineRepository = mySQLFineRepository;
+    }
 
     @Override
     public Optional<Fine> findByLendingNumber(String lendingNumber) {

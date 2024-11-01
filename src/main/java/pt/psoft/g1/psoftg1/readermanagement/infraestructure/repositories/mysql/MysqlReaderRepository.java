@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql.entities.ReaderDetailsEntity;
 
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 @Profile("mysql")
 public interface MysqlReaderRepository extends  JpaRepository<ReaderDetailsEntity, Long> {
     @Query("SELECT r " +

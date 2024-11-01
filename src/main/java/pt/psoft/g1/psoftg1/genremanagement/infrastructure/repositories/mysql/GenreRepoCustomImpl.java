@@ -5,7 +5,8 @@ import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -21,13 +22,17 @@ import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.e
 import java.time.LocalDate;
 import java.util.*;
 
-@RequiredArgsConstructor
 @Repository
 class GenreRepoCustomImpl implements GenreRepository {
 
     private final EntityManager entityManager;
     private final MySQLGenreRepository mySQLGenreRepository;
 
+    @Autowired
+    public GenreRepoCustomImpl(EntityManager entityManager, @Lazy MySQLGenreRepository mySQLGenreRepository) {
+        this.entityManager = entityManager;
+        this.mySQLGenreRepository = mySQLGenreRepository;
+    }
 
     @Override
     public List<GenreLendingsPerMonthDTO> getLendingsPerMonthLastYearByGenre() {

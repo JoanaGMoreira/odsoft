@@ -77,9 +77,7 @@ class ReaderController {
         this.apiNinjasService = apiNinjasService;
     }
 
-    @Autowired
-    @Lazy
-
+//    @Autowired
     @Operation(summary = "Gets the reader data if authenticated as Reader or all readers if authenticated as Librarian")
     @ApiResponse(description = "Success", responseCode = "200", content = { @Content(mediaType = "application/json",
             // Use the `array` property instead of `schema`

@@ -40,13 +40,13 @@ import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
  * Based on https://github.com/Yoh0xFF/java-spring-security-example
  *
  */
-@Repository
+//@Repository
 @CacheConfig(cacheNames = "users")
 @Profile("mysql")
 public interface MysqlUserRepository extends JpaRepository<UserEntity, Long> {
 
 	@Override
-	@CacheEvict(allEntries = true)
+	//@CacheEvict(allEntries = true)
 	<S extends UserEntity> List<S> saveAll(Iterable<S> entities);
 
 	@Override

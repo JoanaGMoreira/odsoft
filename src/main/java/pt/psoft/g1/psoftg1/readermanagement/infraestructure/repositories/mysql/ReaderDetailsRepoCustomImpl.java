@@ -3,7 +3,8 @@ package pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -20,13 +21,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Repository
 class ReaderDetailsRepoCustomImpl implements ReaderRepository {
 
     private final EntityManager em;
     private final MysqlReaderRepository mysqlReaderRepository;
 
+    @Autowired
+    public ReaderDetailsRepoCustomImpl(EntityManager em, @Lazy MysqlReaderRepository mysqlReaderRepository) {
+        this.em = em;
+        this.mysqlReaderRepository = mysqlReaderRepository;
+    }
 
     @Override
     public Optional<ReaderDetails> findByReaderNumber(String readerNumber) {

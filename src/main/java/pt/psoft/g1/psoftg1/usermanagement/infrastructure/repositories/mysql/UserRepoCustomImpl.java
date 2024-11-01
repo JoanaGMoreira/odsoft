@@ -6,10 +6,10 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.shared.services.Page;
@@ -29,7 +29,6 @@ import java.util.stream.StreamSupport;
  *
  * @see <a href="https://www.baeldung.com/hibernate-criteria-queries">...</a>
  */
-@RequiredArgsConstructor
 @Repository
 class UserRepoCustomImpl implements UserRepository {
 
@@ -37,6 +36,12 @@ class UserRepoCustomImpl implements UserRepository {
     // injection
     private final EntityManager em;
     private final MysqlUserRepository mysqlUserRepository;
+
+    @Autowired
+    public UserRepoCustomImpl(EntityManager em, @Lazy MysqlUserRepository mysqlUserRepository) {
+        this.em = em;
+        this.mysqlUserRepository = mysqlUserRepository;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(UserRepoCustomImpl.class);
 
@@ -94,7 +99,9 @@ class UserRepoCustomImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return mysqlUserRepository.findByUsername(username).map(UserMapper::toModel);
+        Optional<UserEntity> byUsername = mysqlUserRepository.findByUsername(username);
+
+        return byUsername.isPresent()? Optional.of(UserMapper.toModel(byUsername.get())): Optional.empty();
     }
 
     @Override

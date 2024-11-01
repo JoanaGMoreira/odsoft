@@ -1,5 +1,6 @@
 package pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class MySQLAuthorRepositoryImpl implements AuthorRepository {
     private final MySQLAuthorRepository mysqlRepository;
 
+    @Autowired
     public MySQLAuthorRepositoryImpl(@Lazy MySQLAuthorRepository mysqlRepository) {
         this.mysqlRepository = mysqlRepository;
     }

@@ -4,14 +4,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.entities.LendingEntity;
-import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
-import pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql.BookEntity;
-import pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql.entities.ReaderDetailsEntity;
+
 import java.util.*;
 
-@Repository
+//@Repository
 @Profile("mysql")
 public interface MySQLLendingRepository extends JpaRepository<LendingEntity, Long> {
 

@@ -3,7 +3,7 @@ package pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Repository
 class LendingRepoCustomImpl implements LendingRepository {
     // get the underlying JPA Entity Manager via spring thru constructor dependency
@@ -26,6 +25,10 @@ class LendingRepoCustomImpl implements LendingRepository {
     private final EntityManager em;
     private final MySQLLendingRepository mySQLLendingRepository;
 
+    public LendingRepoCustomImpl(EntityManager em, @Lazy MySQLLendingRepository mySQLLendingRepository) {
+        this.em = em;
+        this.mySQLLendingRepository = mySQLLendingRepository;
+    }
 
     @Override
     public Optional<Lending> findByLendingNumber(String lendingNumber) {

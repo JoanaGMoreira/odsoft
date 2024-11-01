@@ -3,6 +3,8 @@ package pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -28,7 +30,8 @@ class BookRepoCustomImpl implements BookRepository {
 
     private final MySQLBookRepository mysqlRepository;
 
-    public BookRepoCustomImpl(EntityManager em, MySQLBookRepository mysqlRepository) {
+    @Autowired
+    public BookRepoCustomImpl(EntityManager em, @Lazy MySQLBookRepository mysqlRepository) {
         this.em = em;
         this.mysqlRepository = mysqlRepository;
     }

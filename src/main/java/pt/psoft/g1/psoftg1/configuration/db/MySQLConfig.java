@@ -26,7 +26,10 @@ import javax.sql.DataSource;
 @Profile("mysql")
 @EnableJpaRepositories(basePackageClasses = {MySQLAuthorRepository.class, MySQLBookRepository.class, MySQLGenreRepository.class,
                 MySQLFineRepository.class, MySQLLendingRepository.class, MysqlReaderRepository.class,
-                MysqlForbiddenNameRepository.class, MysqlPhotoRepository.class, MysqlUserRepository.class, UserRepository.class})
+                MysqlForbiddenNameRepository.class, MysqlPhotoRepository.class, MysqlUserRepository.class}, basePackages = {"pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql"})
 public class MySQLConfig {
 
     @Autowired

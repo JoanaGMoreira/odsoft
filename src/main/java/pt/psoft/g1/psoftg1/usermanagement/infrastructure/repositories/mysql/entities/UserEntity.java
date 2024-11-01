@@ -28,7 +28,7 @@ public class UserEntity {
 
     // database primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Getter
     @Setter
     @Column(name="USER_ID")

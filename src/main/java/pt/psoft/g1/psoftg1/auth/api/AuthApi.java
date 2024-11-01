@@ -70,7 +70,6 @@ public class AuthApi {
 	private final UserService userService;
 
 	@Autowired
-	@Lazy
 	public AuthApi(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, UserViewMapper userViewMapper, UserService userService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtEncoder = jwtEncoder;
