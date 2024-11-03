@@ -6,6 +6,10 @@ import lombok.Setter;
 
 public class Genre {
     public static final int GENRE_MAX_LENGTH = 100;
+
+    @Getter
+    @Setter
+    long pk;
     @Getter
     @Setter
     String genre;

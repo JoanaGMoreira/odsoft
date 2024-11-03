@@ -3,9 +3,9 @@ package pt.psoft.g1.psoftg1;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import pt.psoft.g1.psoftg1.configuration.db.MySQLConfig;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "pt.psoft.g1.psoftg1.usermanagement.repositories") // Specify your package here
 public class PsoftG1Application {
 
 	public static void main(String[] args) {

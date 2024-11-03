@@ -7,7 +7,8 @@ import pt.psoft.g1.psoftg1.usermanagement.model.User;
 public class UserMapper {
     public static UserEntity toEntity(User user) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(user.getId());
+
+        userEntity.setId();
         userEntity.setCreatedAt(user.getCreatedAt());
         userEntity.setEnabled(user.isEnabled());
         userEntity.setModifiedAt(user.getModifiedAt());

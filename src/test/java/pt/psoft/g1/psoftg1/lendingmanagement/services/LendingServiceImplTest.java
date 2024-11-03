@@ -6,18 +6,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.Transactional;
+import pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql.MySQLAuthorRepository;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.authormanagement.repositories.AuthorRepository;
+import pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql.MySQLBookRepository;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
 import pt.psoft.g1.psoftg1.bookmanagement.repositories.BookRepository;
 import pt.psoft.g1.psoftg1.exceptions.LendingForbiddenException;
+import pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.mysql.MySQLGenreRepository;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.MySQLFineRepository;
+import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.MySQLLendingRepository;
 import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
 import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
+import pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql.MysqlReaderRepository;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.readermanagement.repositories.ReaderRepository;
+import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MysqlForbiddenNameRepository;
+import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.MysqlPhotoRepository;
+import pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql.MysqlUserRepository;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 
@@ -30,6 +40,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
+@ComponentScan(basePackageClasses = {MySQLAuthorRepository.class, MySQLBookRepository.class, MySQLGenreRepository.class,
+        MySQLFineRepository.class, MySQLLendingRepository.class, MysqlReaderRepository.class,
+        MysqlForbiddenNameRepository.class, MysqlPhotoRepository.class, MysqlUserRepository.class}, basePackages = {"pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.bookmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.genremanagement.infrastructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.readermanagement.infraestructure.repositories.mysql",
+        "pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql", "pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql"})
 class LendingServiceImplTest {
     @Autowired
     private LendingService lendingService;

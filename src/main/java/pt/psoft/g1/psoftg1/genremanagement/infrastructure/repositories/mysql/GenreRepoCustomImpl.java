@@ -95,7 +95,9 @@ class GenreRepoCustomImpl implements GenreRepository {
 
     @Override
     public Genre save(Genre genre) {
-        return GenreMapper.toModel(mySQLGenreRepository.save(GenreMapper.toEntity(genre)));
+        GenreEntity genreEntity = mySQLGenreRepository.save(GenreMapper.toEntity(genre));
+        mySQLGenreRepository.saveAndFlush(genreEntity);
+        return GenreMapper.toModel(genreEntity);
     }
 
     @Override

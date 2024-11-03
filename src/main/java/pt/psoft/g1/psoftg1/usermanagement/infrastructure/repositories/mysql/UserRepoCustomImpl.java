@@ -1,6 +1,7 @@
 package pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.mysql;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.shared.services.Page;
 import pt.psoft.g1.psoftg1.usermanagement.infrastructure.repositories.UserMapper;
@@ -34,11 +36,12 @@ class UserRepoCustomImpl implements UserRepository {
 
     // get the underlying JPA Entity Manager via spring through constructor dependency
     // injection
-    private final EntityManager em;
-    private final MysqlUserRepository mysqlUserRepository;
+    @PersistenceContext
+    private  EntityManager em;
+    private  MysqlUserRepository mysqlUserRepository;
 
     @Autowired
-    public UserRepoCustomImpl(EntityManager em, @Lazy MysqlUserRepository mysqlUserRepository) {
+    public UserRepoCustomImpl(EntityManager em, MysqlUserRepository mysqlUserRepository) {
         this.em = em;
         this.mysqlUserRepository = mysqlUserRepository;
     }
@@ -67,6 +70,10 @@ class UserRepoCustomImpl implements UserRepository {
         // Save all database entities in batch
         List<UserEntity> savedDbEntities = mysqlUserRepository.saveAll(dbEntities);
 
+        savedDbEntities.forEach(userEntity -> {
+            mysqlUserRepository.saveAndFlush(userEntity);
+        });
+
         // Convert saved database entities back to domain models
         List<S> savedModels = savedDbEntities.stream()
                 .map(dbEntity -> (S) UserMapper.toModel(dbEntity))
@@ -78,6 +85,7 @@ class UserRepoCustomImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public <S extends User> S save(S entity) {
         logger.debug("Saving user entity: {}", entity);
         var dbEntity = UserMapper.toEntity(entity);
@@ -87,7 +95,7 @@ class UserRepoCustomImpl implements UserRepository {
 
         // Convert back to domain model
         S savedModel = (S) UserMapper.toModel(savedDbEntity);
-
+        mysqlUserRepository.saveAndFlush(savedDbEntity);
         logger.debug("Saved user model: {}", savedModel);
         return savedModel;
     }
@@ -98,18 +106,18 @@ class UserRepoCustomImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public Optional<User> findByUsername(String username) {
         Optional<UserEntity> byUsername = mysqlUserRepository.findByUsername(username);
-
-        return byUsername.isPresent()? Optional.of(UserMapper.toModel(byUsername.get())): Optional.empty();
+        return byUsername.map(UserMapper::toModel);
     }
 
     @Override
     public List<User> searchUsers(final Page page, final SearchUsersQuery query) {
 
         final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<User> cq = cb.createQuery(User.class);
-        final Root<User> root = cq.from(User.class);
+        final CriteriaQuery<UserEntity> cq = cb.createQuery(UserEntity.class);
+        final Root<UserEntity> root = cq.from(UserEntity.class);
         cq.select(root);
 
         final List<Predicate> where = new ArrayList<>();
@@ -127,11 +135,11 @@ class UserRepoCustomImpl implements UserRepository {
 
         cq.orderBy(cb.desc(root.get("createdAt")));
 
-        final TypedQuery<User> q = em.createQuery(cq);
+        final TypedQuery<UserEntity> q = em.createQuery(cq);
         q.setFirstResult((page.getNumber() - 1) * page.getLimit());
         q.setMaxResults(page.getLimit());
 
-        return q.getResultList();
+        return q.getResultList().stream().map(UserMapper::toModel).toList();
     }
 
     @Override

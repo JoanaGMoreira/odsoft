@@ -6,6 +6,7 @@ import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 public class GenreMapper {
     public static GenreEntity toEntity(Genre genre) {
         GenreEntity entity = new GenreEntity();
+        entity.setPk(genre.getPk());
         entity.setGenre(genre.getGenre());
         return entity;
     }
@@ -13,7 +14,7 @@ public class GenreMapper {
     // Convert MySQL Entity to Service Model
     public static Genre toModel(GenreEntity entity) {
         Genre genre = new Genre(entity.getGenre());
-        genre.setGenre(entity.getGenre());
+        genre.setPk(entity.getPk());
         return genre;
     }
 }

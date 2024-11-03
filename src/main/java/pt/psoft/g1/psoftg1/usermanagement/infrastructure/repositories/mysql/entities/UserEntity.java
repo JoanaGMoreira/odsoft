@@ -101,8 +101,18 @@ public class UserEntity {
         authorities.add(r);
     }
 
-    public UserEntity() {
+    protected UserEntity() {
         // for ORM only
+    }
+
+    public UserEntity(final String username, final String password, final NameEntity name) {
+        this.username = username;
+        this.name = name;
+        setPassword(password);
+    }
+
+    public static UserEntity newUser(final String username, final String password, final NameEntity name) {
+        return new UserEntity(username, password, name);
     }
 
 }

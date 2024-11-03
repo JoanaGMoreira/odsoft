@@ -1,5 +1,6 @@
 package pt.psoft.g1.psoftg1.bootstrapping;
 
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -11,15 +12,14 @@ import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.readermanagement.repositories.ReaderRepository;
+import pt.psoft.g1.psoftg1.shared.services.Page;
 import pt.psoft.g1.psoftg1.usermanagement.model.Librarian;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 import pt.psoft.g1.psoftg1.usermanagement.model.User;
 import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
+import pt.psoft.g1.psoftg1.usermanagement.services.SearchUsersQuery;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,8 +83,10 @@ public class UserBootstrapper implements CommandLineRunner {
             }
         }
 
+
         //Reader2 - João
         if (userRepository.findByUsername("joao@gmail.com").isEmpty()) {
+        //if(userRepository.searchUsers(new Page(1, 10), new SearchUsersQuery("joao@gmail.com", "")).isEmpty()){
             final Reader joao = Reader.newReader("joao@gmail.com", "Joaoratao!123", "João Ratao");
             userRepository.save(joao);
            // String dateFormat = LocalDateTime.of(LocalDate.of(2024, 3, 20), LocalTime.now()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
