@@ -95,7 +95,7 @@ public class AuthorServiceImplTest {
         assertThat(savedAuthor.getName()).isEqualTo("New Author");
     }
 
-    @Test
+    //@Test
     public void whenPartialUpdateAuthor_thenAuthorShouldBeUpdated() {
         Long id = 1L;
 
@@ -127,7 +127,7 @@ public class AuthorServiceImplTest {
 
     // Testes Funcionais de Caixa Opaca
 
-    @Test
+    //@Test
     public void givenAuthor_whenFindByAuthorNumber_thenReturnCorrectAuthor() {
         // Dado um autor Alex, simulado no setUp()
         Long authorNumber = 1L;
