@@ -14,27 +14,6 @@ services:
       - "./conf.d:/etc/mysql/conf.d:ro"
     profiles:
       - mysql
-  redis:
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass library
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=library
-    profiles:
-      - redis
-  mongo:
-    image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=library
-    ports:
-      - "27017:27017"
-    volumes:
-      - "./conf.d:/etc/mongodb/conf.d:ro"
   lms:
     image: lms:latest
     build: .

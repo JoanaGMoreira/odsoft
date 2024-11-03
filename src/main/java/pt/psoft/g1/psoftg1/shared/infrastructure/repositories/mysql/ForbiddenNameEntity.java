@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@Table(name = "forbidden_name")
 public class ForbiddenNameEntity {
 
     @Id
