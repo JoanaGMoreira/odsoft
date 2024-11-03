@@ -6,17 +6,18 @@ import pt.psoft.g1.psoftg1.usermanagement.model.User;
 
 public class UserMapper {
     public static UserEntity toEntity(User user) {
-        UserEntity userEntity = new UserEntity();
+//        UserEntity userEntity = new UserEntity();
 
-        userEntity.setId();
-        userEntity.setCreatedAt(user.getCreatedAt());
-        userEntity.setEnabled(user.isEnabled());
-        userEntity.setModifiedAt(user.getModifiedAt());
-        userEntity.setModifiedBy(user.getModifiedBy());
-        userEntity.setName(NameMapper.toEntity(user.getName()));
-        userEntity.setUsername(user.getUsername());
-        userEntity.setPassword(user.getPassword());
-        userEntity.setVersion(user.getVersion());
+//        userEntity.setId();
+//        userEntity.setCreatedAt(user.getCreatedAt());
+//        userEntity.setEnabled(user.isEnabled());
+//        userEntity.setModifiedAt(user.getModifiedAt());
+//        userEntity.setModifiedBy(user.getModifiedBy());
+//        userEntity.setName(NameMapper.toEntity(user.getName()));
+//        userEntity.setUsername(user.getUsername());
+//        userEntity.setPassword(user.getPassword());
+//        userEntity.setVersion(user.getVersion());
+        UserEntity userEntity = new UserEntity( user.getUsername(), user.getPassword(), NameMapper.toEntity(user.getName()));
         user.getAuthorities().forEach(authority -> userEntity.addAuthority(authority));
         return userEntity;
     }
