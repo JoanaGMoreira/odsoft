@@ -169,7 +169,6 @@ public class LendingController {
     }
 
 
-    // Novos Endpoints de Recomendação
 
     @Operation(summary = "Recommends books based on the most requested genres")
     @GetMapping("/recommend/mostRequestedGenres")

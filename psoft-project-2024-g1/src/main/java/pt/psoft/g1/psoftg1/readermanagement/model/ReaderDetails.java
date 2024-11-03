@@ -73,7 +73,7 @@ public class ReaderDetails extends EntityWithPhoto {
         setReaderNumber(new ReaderNumber(readerNumber));
         setPhoneNumber(new PhoneNumber(phoneNumber));
         setBirthDate(new BirthDate(birthDate));
-        //By the client specifications, gdpr can only have the value of true. A setter will be created anyways in case we have accept no gdpr consent later on the project
+        //By the client specifications, gdpr can only have the value of true. A setter will be created anyway in case we have accept no gdpr consent later on the project
         setGdprConsent(true);
 
         setPhotoInternal(photoURI);
@@ -171,10 +171,10 @@ public class ReaderDetails extends EntityWithPhoto {
     }
 
     public int getAge() {
-        if (this.birthDate != null) { // Verifique apenas se birthDate não é nulo
-            return Period.between(this.birthDate.getBirthDate(), LocalDate.now()).getYears(); // Use o getter getBirthDate()
+        if (this.birthDate != null) {
+            return Period.between(this.birthDate.getBirthDate(), LocalDate.now()).getYears();
         }
-        throw new IllegalStateException("BirthDate não disponível para calcular idade.");
+        throw new IllegalStateException("Birthdate not available");
     }
 
     public Long getId() {
