@@ -38,7 +38,7 @@ pipeline {
                     sh '''
                         mvn sonar:sonar -Dsonar.projectKey=LMS
                                 -Dsonar.projectKey=LMS \
-                                -Dsonar.sources=src \
+                                -Dsonar.projectName=''LMS'' \
                                 -Dsonar.host.url=$SONARQUBE_URL \
                                 -Dsonar.login=$SONAR_TOKEN
                         '''
