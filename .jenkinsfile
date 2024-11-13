@@ -48,8 +48,8 @@ pipeline {
             stage('Build docker container') {
                 steps {
                     echo 'Building docker container....'
-                    sh 'la -la target'
-                    sh 'la -la target/pit-reports'
+                    sh 'ls -la target'
+                    sh 'ls -la target/pit-reports'
                 }
             }
     }
