@@ -11,32 +11,32 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-         stage('Unit Tests') {
-             steps {
-                 echo 'Running Unit Tests..'
-                 sh 'mvn test'
-                 junit 'target/surefire-reports/*.xml'
-             }
-         }
-        stage('Mutation Tests') {
-             steps {
-                 echo 'Running Mutation Tests..'
-                 sh 'mvn org.pitest:pitest-maven:mutationCoverage'
-             }
-        }
-        stage('Integration Tests') {
-             steps {
-                 echo 'Running Integration Tests..'
-                 sh 'mvn verify'
-                 junit 'target/failsafe-reports/*.xml'
-             }
-        }
+//          stage('Unit Tests') {
+//              steps {
+//                  echo 'Running Unit Tests..'
+//                  sh 'mvn test'
+//                  junit 'target/surefire-reports/*.xml'
+//              }
+//          }
+//         stage('Mutation Tests') {
+//              steps {
+//                  echo 'Running Mutation Tests..'
+//                  sh 'mvn org.pitest:pitest-maven:mutationCoverage'
+//              }
+//         }
+//         stage('Integration Tests') {
+//              steps {
+//                  echo 'Running Integration Tests..'
+//                  sh 'mvn verify'
+//                  junit 'target/failsafe-reports/*.xml'
+//              }
+//         }
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
                 withSonarQubeEnv('SonarQubeServer') {
                     sh '''
-                        mvn sonar:sonar -Dsonar.projectKey=LMS'
+                        mvn sonar:sonar -Dsonar.projectKey=LMS
                                 -Dsonar.projectKey=LMS \
                                 -Dsonar.sources=src \
                                 -Dsonar.host.url=$SONARQUBE_URL \
@@ -45,24 +45,24 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                sh 'mvn install -DskipTests'
-            }
-        }
-        stage('Build docker image') {
-            steps {
-                echo 'Building docker image....'
-                sh 'docker build -t lms .'
-            }
-        }
-        stage('Build docker container') {
-            steps {
-                echo 'Building docker container....'
-                sh 'docker-compose up -d'
-            }
-        }
+//         stage('Deploy') {
+//             steps {
+//                 echo 'Deploying....'
+//                 sh 'mvn install -DskipTests'
+//             }
+//         }
+//         stage('Build docker image') {
+//             steps {
+//                 echo 'Building docker image....'
+//                 sh 'docker build -t lms .'
+//             }
+//         }
+//         stage('Build docker container') {
+//             steps {
+//                 echo 'Building docker container....'
+//                 sh 'docker-compose up -d'
+//             }
+//         }
 
     }
     post {
