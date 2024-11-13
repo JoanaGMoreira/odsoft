@@ -57,8 +57,14 @@ pipeline {
         always {
             // Archive JUnit test results
             junit 'target/surefire-reports/*.xml'
-            junit 'target/pit-reports/*.html'
             junit 'target/failsafe-reports/*.xml'
+            publishHTML (target : [allowMissing: false,
+             alwaysLinkToLastBuild: true,
+             keepAll: true,
+             reportDir: 'target/pit-reports',
+             reportFiles: 'index.html',
+             reportName: 'Mutation Test Report',
+             reportTitles: 'Mutation Test Report'])
         }
     }
 }
