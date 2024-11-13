@@ -18,19 +18,26 @@ pipeline {
                  junit 'target/surefire-reports/*.xml'
              }
          }
-//         stage('Mutation Tests') {
-//              steps {
-//                  echo 'Running Mutation Tests..'
-//                  sh 'mvn org.pitest:pitest-maven:mutationCoverage'
-//              }
-//         }
-//         stage('Integration Tests') {
-//              steps {
-//                  echo 'Running Integration Tests..'
-//                  sh 'mvn verify'
-//                  junit 'target/failsafe-reports/*.xml'
-//              }
-//         }
+        stage('Mutation Tests') {
+             steps {
+                 echo 'Running Mutation Tests..'
+                 sh 'mvn org.pitest:pitest-maven:mutationCoverage'
+                  publishHTML (target : [allowMissing: false,
+                              alwaysLinkToLastBuild: true,
+                              keepAll: true,
+                              reportDir: 'target/pit-reports',
+                              reportFiles: 'index.html',
+                              reportName: 'Mutation Test Report',
+                              reportTitles: 'Mutation Test Report'])
+             }
+        }
+        stage('Integration Tests') {
+             steps {
+                 echo 'Running Integration Tests..'
+                 sh 'mvn verify'
+                 junit 'target/failsafe-reports/*.xml'
+             }
+        }
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
@@ -39,36 +46,24 @@ pipeline {
                 }
             }
         }
-//         stage('Deploy') {
-//             steps {
-//                 echo 'Deploying....'
-//                 sh 'mvn install -DskipTests'
-//             }
-//         }
-//         stage('Build docker image') {
-//             steps {
-//                 echo 'Building docker image....'
-//                 sh 'docker build -t lms .'
-//             }
-//         }
-//         stage('Build docker container') {
-//             steps {
-//                 echo 'Building docker container....'
-//                 sh 'docker-compose up -d'
-//             }
-//         }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh 'mvn install -DskipTests'
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                echo 'Building docker image....'
+                sh 'docker build -t lms .'
+            }
+        }
+        stage('Build docker container') {
+            steps {
+                echo 'Building docker container....'
+                sh 'docker-compose up -d'
+            }
+        }
 
     }
-//     post {
-//         always {
-//             // Archive JUnit test results
-//             publishHTML (target : [allowMissing: false,
-//              alwaysLinkToLastBuild: true,
-//              keepAll: true,
-//              reportDir: 'target/pit-reports',
-//              reportFiles: 'index.html',
-//              reportName: 'Mutation Test Report',
-//              reportTitles: 'Mutation Test Report'])
-//         }
-//     }
 }
