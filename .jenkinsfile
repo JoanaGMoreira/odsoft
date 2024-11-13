@@ -65,16 +65,16 @@ pipeline {
 //         }
 
     }
-    post {
-        always {
-            // Archive JUnit test results
-            publishHTML (target : [allowMissing: false,
-             alwaysLinkToLastBuild: true,
-             keepAll: true,
-             reportDir: 'target/pit-reports',
-             reportFiles: 'index.html',
-             reportName: 'Mutation Test Report',
-             reportTitles: 'Mutation Test Report'])
-        }
-    }
+//     post {
+//         always {
+//             // Archive JUnit test results
+//             publishHTML (target : [allowMissing: false,
+//              alwaysLinkToLastBuild: true,
+//              keepAll: true,
+//              reportDir: 'target/pit-reports',
+//              reportFiles: 'index.html',
+//              reportName: 'Mutation Test Report',
+//              reportTitles: 'Mutation Test Report'])
+//         }
+//     }
 }
