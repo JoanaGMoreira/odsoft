@@ -50,13 +50,14 @@ pipeline {
                     echo 'Building docker container....'
                     sh 'ls -la target'
                     sh 'ls -la target/pit-reports'
+                    junit 'target/surefire-reports/*.xml'
                 }
+
             }
     }
     post {
         always {
             // Archive JUnit test results
-            junit 'target/surefire-reports/*.xml'
             junit 'target/failsafe-reports/*.xml'
             publishHTML (target : [allowMissing: false,
              alwaysLinkToLastBuild: true,
