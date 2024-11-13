@@ -11,13 +11,13 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-//          stage('Unit Tests') {
-//              steps {
-//                  echo 'Running Unit Tests..'
-//                  sh 'mvn test'
-//                  junit 'target/surefire-reports/*.xml'
-//              }
-//          }
+         stage('Unit Tests') {
+             steps {
+                 echo 'Running Unit Tests..'
+                 sh 'mvn test'
+                 junit 'target/surefire-reports/*.xml'
+             }
+         }
 //         stage('Mutation Tests') {
 //              steps {
 //                  echo 'Running Mutation Tests..'
@@ -38,7 +38,7 @@ pipeline {
                     sh '''
                         mvn sonar:sonar -Dsonar.projectKey=LMS
                                 -Dsonar.projectKey=LMS \
-                                -Dsonar.sources=src \
+                                -Dsonar.projectName=LMS \
                                 -Dsonar.host.url=$SONARQUBE_URL \
                                 -Dsonar.login=$SONAR_TOKEN
                         '''
