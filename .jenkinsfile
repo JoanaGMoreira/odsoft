@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Integration Tests') {
              steps {
-                 echo 'Running Integration Tests..'
+                 echo 'Running Integration and Acceptance Tests..'
                  sh 'mvn verify'
                  junit 'target/failsafe-reports/*.xml'
              }
