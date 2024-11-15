@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        SONAR_TOKEN = credentials('sonar-token')
+    }
 
       stages {
         stage('Clean') {
@@ -34,6 +37,14 @@ pipeline {
                  sh 'mvn verify'
                  junit 'target/failsafe-reports/*.xml'
              }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube Analysis...'
+                withSonarQubeEnv('SonarQubeServer') {
+                    sh  'mvn sonar:sonar -Dsonar.projectKey=LMS -Dsonar.projectKey=LMS -Dsonar.projectName=LMS -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONAR_TOKEN'
+                }
+            }
         }
         stage('Deploy') {
             steps {
