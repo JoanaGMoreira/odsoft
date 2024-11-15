@@ -8,7 +8,7 @@ import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
 
 import static io.restassured.RestAssured.given;
 
-public class AuthorAcceptanceTest {
+public class AuthorAT {
 
     private final String baseUrl = "http://localhost:2228/api/authors";
     private final String bearerToken = authenticate("maria@gmail.com", "Mariaroberta!123");
