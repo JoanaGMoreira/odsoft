@@ -220,6 +220,7 @@
 						<configuration>
 							<includes>
 								<include>*/*IT.java</include>
+								<include>*/*AcceptanceTest.java</include>
 							</includes>
 						</configuration>
 					</execution>
