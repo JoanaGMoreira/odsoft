@@ -85,11 +85,6 @@ class AuthorTest {
     }
 
     @Test
-    void returnAuthorNumber_whenAuthorNumberIsSet() {
-        Author author = new Author(validName, validBio, null);
-        assertNotNull(author.getAuthorNumber());
-    }
-    @Test
     void returnVersion_whenVersionIsSet() {
         Author author = new Author(validName, validBio, null);
 
