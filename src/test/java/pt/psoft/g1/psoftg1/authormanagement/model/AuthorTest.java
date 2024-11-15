@@ -1,8 +1,6 @@
 package pt.psoft.g1.psoftg1.authormanagement.model;
 
 import org.hibernate.StaleObjectStateException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
@@ -84,6 +82,18 @@ class AuthorTest {
         Photo photo = author.getPhoto();
         assertNotNull(photo);
         assertEquals("photoTest.jpg", photo.getPhotoFile());
+    }
+
+    @Test
+    void returnAuthorNumber_whenAuthorNumberIsSet() {
+        Author author = new Author(validName, validBio, null);
+        assertNotNull(author.getAuthorNumber());
+    }
+    @Test
+    void returnVersion_whenVersionIsSet() {
+        Author author = new Author(validName, validBio, null);
+
+        assertEquals(0L, author.getVersion().longValue());
     }
 
 //    @Test
