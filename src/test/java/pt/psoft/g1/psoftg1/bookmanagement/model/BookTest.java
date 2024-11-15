@@ -6,11 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
+import pt.psoft.g1.psoftg1.bookmanagement.services.UpdateBookRequest;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class BookTest {
     private final String validIsbn = "9782826012092";
@@ -59,18 +62,27 @@ class BookTest {
     }
 
     @Test
+        //Test unitario de caixa transparente
     void ensureGenreCannotBeEmpty() {
+        // arrange
+
+        // act
+
+        // assert
+
         authors.add(validAuthor1);
 
         // valida que um gênero vazio lança exceção
         assertThrows(IllegalArgumentException.class, () -> new Book(validIsbn, validTitle, null, null, authors, null));
     }
 
+
     @Test
     void ensureAuthorsListCannotBeEmpty() {
         // validando que a lista de autores não pode estar vazia
         assertThrows(IllegalArgumentException.class, () -> new Book(validIsbn, validTitle, null, validGenre, authors, null));
     }
+
 
     // ---------------------- Testes Transparentes ----------------------
 
@@ -122,4 +134,30 @@ class BookTest {
 
         assertEquals("", book.getDescription());  // Deve permitir descrição vazia
     }
+
+    // ---------------------- Testes de unitários de caixa transparente ----------------------
+    @Test
+    void whenApplyPatch_thenUpdateBookRequestGettersAreAllCalledOnce(){
+        // Arrange: setup UpdateBookRequest with mock values
+
+        Genre mockGenre = new Genre("Epic Poetry");
+        Author mockAuthor = new Author("Luís de Camões", "Luís Vaz de Camões foi um poeta de Portugal", null);
+        Book book = new Book("9789720727602", "Os Lusíadas",
+                "Os Lusíadas contam a história da viagem do caminho marítimo para a Índia por Vasco da Gama " +
+                        "na época dos Descobrimentos, mas é muito mais do que isso.",
+                mockGenre, Collections.singletonList(mockAuthor), "validPhotoUri");
+        Long currentVersion = book.getVersion();
+        UpdateBookRequest mockRequest = mock(UpdateBookRequest.class);
+
+        // Act: call applyPatch
+        book.applyPatch(currentVersion, mockRequest);
+
+        // Assert: verify that getters were called once
+        verify(mockRequest, times(1)).getTitle();
+        verify(mockRequest, times(1)).getDescription();
+        verify(mockRequest, times(1)).getGenreObj();
+        verify(mockRequest, times(1)).getAuthorObjList();
+        verify(mockRequest, times(1)).getPhotoURI();
+    }
+
 }

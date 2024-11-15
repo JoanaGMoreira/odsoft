@@ -24,7 +24,7 @@ public abstract class EntityWithPhoto {
         this.setPhotoInternal(photoUri);
     }
 
-    protected void setPhotoInternal(String photoURI) {
+    public void setPhotoInternal(String photoURI) {
         if (photoURI == null) {
             this.photo = null;
         } else {

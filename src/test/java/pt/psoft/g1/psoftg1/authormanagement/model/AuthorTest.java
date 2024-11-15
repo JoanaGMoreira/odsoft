@@ -1,8 +1,10 @@
 package pt.psoft.g1.psoftg1.authormanagement.model;
 
 import org.hibernate.StaleObjectStateException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 import pt.psoft.g1.psoftg1.authormanagement.services.CreateAuthorRequest;
 import pt.psoft.g1.psoftg1.authormanagement.services.UpdateAuthorRequest;
 import pt.psoft.g1.psoftg1.shared.model.EntityWithPhoto;
@@ -10,6 +12,9 @@ import pt.psoft.g1.psoftg1.shared.model.Photo;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
 
 class AuthorTest {
     private final String validName = "João Alberto";
@@ -18,9 +23,7 @@ class AuthorTest {
     private final UpdateAuthorRequest request = new UpdateAuthorRequest(validName, validBio, null, null);
 
     private static class EntityWithPhotoImpl extends EntityWithPhoto { }
-    @BeforeEach
-    void setUp() {
-    }
+
     @Test
     void ensureNameNotNull(){
         assertThrows(IllegalArgumentException.class, () -> new Author(null,validBio, null));
@@ -81,6 +84,47 @@ class AuthorTest {
         Photo photo = author.getPhoto();
         assertNotNull(photo);
         assertEquals("photoTest.jpg", photo.getPhotoFile());
+    }
+
+//    @Test
+//    void whenRemovePhoto_thenDesiredVersionMustNotBeNegative() {
+//        Author author = new Author(validName, validBio, "photoTest.jpg");
+//        assert
+//    }
+
+    //Transparent Box Testing
+
+    @Test
+    void whenApplyPatch_thenAuthorBookRequestGettersAreAllCalledOnce() {
+        //arrange
+        Author mockAuthor = new Author("Luís de Camões", "Luís Vaz de Camões foi um poeta de Portugal", null);
+        UpdateAuthorRequest mockRequest = mock(UpdateAuthorRequest.class);
+
+        //act
+        Long currentVersion = mockAuthor.getVersion();
+        mockAuthor.applyPatch(currentVersion, mockRequest);
+        //assert
+        verify(mockRequest, times(1)).getName();
+        verify(mockRequest, times(1)).getBio();
+        verify(mockRequest, times(1)).getPhotoURI();
+    }
+
+    @Test
+    void whenApplyPatchWithNullValues_thenSettersAreNeverCalled(){
+        // Arrange
+
+        Author mockedAuthor = mock(Author.class);
+        UpdateAuthorRequest updateBookRequest = new UpdateAuthorRequest(
+                null,
+                null, mock(MultipartFile.class), null);
+
+        // Act
+        mockedAuthor.applyPatch(1L, updateBookRequest);
+
+        // Assert
+        verify(mockedAuthor, never()).setBio(anyString());
+        verify(mockedAuthor, never()).setName(anyString());
+        verify(mockedAuthor, never()).setPhotoInternal(anyString());
     }
 }
 

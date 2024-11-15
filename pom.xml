@@ -168,6 +168,7 @@
 						<param>pt.psoft.g1.psoftg1.genremanagement.model.*</param>
 						<param>pt.psoft.g1.psoftg1.lendingmanagement.model.*</param>
 						<param>pt.psoft.g1.psoftg1.readermanagement.model.*</param>
+						<param>pt.psoft.g1.psoftg1.shared.model.*</param>
 					</targetClasses>
 					<targetTests>
 						<param>pt.psoft.g1.psoftg1.authormanagement.model.*</param>
@@ -175,6 +176,7 @@
 						<param>pt.psoft.g1.psoftg1.genremanagement.model.*</param>
 						<param>pt.psoft.g1.psoftg1.lendingmanagement.model.*</param>
 						<param>pt.psoft.g1.psoftg1.readermanagement.model.*</param>
+						<param>pt.psoft.g1.psoftg1.shared.model.*</param>
 					</targetTests>
 					<outputFormats>
 						<param>XML</param>
