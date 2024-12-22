@@ -23,7 +23,7 @@ import pt.psoft.g1.psoftg1.usermanagement.repositories.UserRepository;
 import javax.sql.DataSource;
 
 @Configuration
-@Profile("mysql")
+@Profile("h2")
 @EnableJpaRepositories(basePackageClasses = {MySQLAuthorRepository.class, MySQLBookRepository.class, MySQLGenreRepository.class,
                 MySQLFineRepository.class, MySQLLendingRepository.class, MysqlReaderRepository.class,
                 MysqlForbiddenNameRepository.class, MysqlPhotoRepository.class, MysqlUserRepository.class}, basePackages = {"pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql",

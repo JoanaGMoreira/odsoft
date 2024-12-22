@@ -12,8 +12,8 @@ import pt.psoft.g1.psoftg1.shared.infrastructure.repositories.mysql.NameEntity;
 @Table(name = "author")
 public class AuthorEntity extends MySQLEntityWithPhoto {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AUTHOR_NUMBER")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long authorNumber;
 
     @Version

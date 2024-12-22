@@ -53,7 +53,7 @@ import java.util.Optional;
 @Tag(name = "Readers", description = "Endpoints to manage readers")
 @RestController
 @RequestMapping("/api/readers")
-@Profile("!mysql")
+@Profile("h2")
 class ReaderController {
     private final ReaderService readerService;
     private final UserService userService;

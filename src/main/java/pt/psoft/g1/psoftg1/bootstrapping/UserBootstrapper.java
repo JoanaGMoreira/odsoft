@@ -40,7 +40,7 @@ public class UserBootstrapper implements CommandLineRunner {
     @Transactional
     public void run(final String... args)  {
         createReaders();
-        createLibrarian();
+        //createLibrarian();
         executeQueries();
     }
 

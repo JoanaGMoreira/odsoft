@@ -17,7 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 public class NameEntity {
     @NotNull
     @NotBlank
-    @Column(name="NAME", length = 150)
+    @Column( length = 150)
     private String name;
     protected NameEntity() {
         // for ORM only

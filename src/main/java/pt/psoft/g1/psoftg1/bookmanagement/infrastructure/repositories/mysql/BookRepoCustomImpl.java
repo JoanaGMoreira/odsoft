@@ -5,6 +5,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Profile("h2")
 class BookRepoCustomImpl implements BookRepository {
     // get the underlying JPA Entity Manager via spring thru constructor dependency
     // injection

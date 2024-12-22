@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 //@Repository
-@Profile("mysql")
+
 public interface MySQLAuthorRepository extends JpaRepository<AuthorEntity, Long> {
 
     Optional<AuthorEntity> findByAuthorNumber(Long authorNumber);

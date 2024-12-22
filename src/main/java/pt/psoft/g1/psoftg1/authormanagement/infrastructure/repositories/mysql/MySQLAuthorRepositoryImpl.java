@@ -2,9 +2,11 @@ package pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.mysql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pt.psoft.g1.psoftg1.authormanagement.api.AuthorLendingView;
 import pt.psoft.g1.psoftg1.authormanagement.infrastructure.repositories.AuthorMapper;
 import pt.psoft.g1.psoftg1.authormanagement.model.Author;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@Profile("h2")
 public class MySQLAuthorRepositoryImpl implements AuthorRepository {
     private final MySQLAuthorRepository mysqlRepository;
 
@@ -40,6 +43,7 @@ public class MySQLAuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
+    @Transactional
     public Author save(Author author) {
         return AuthorMapper.toModel(mysqlRepository.save(AuthorMapper.toEntity(author)));
     }

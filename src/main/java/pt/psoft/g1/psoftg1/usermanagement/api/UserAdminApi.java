@@ -45,7 +45,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/admin/users")
 @RolesAllowed(Role.ADMIN)
-@Profile("!mysql")
+@Profile("h2")
 public class UserAdminApi {
 
 	private final UserService userService;

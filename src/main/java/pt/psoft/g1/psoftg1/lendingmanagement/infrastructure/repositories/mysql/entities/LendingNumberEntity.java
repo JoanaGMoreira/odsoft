@@ -19,7 +19,7 @@ public class LendingNumberEntity implements Serializable {
      * Natural key of a {@code Lending}.
      * The string is constructed based on the values of {@code year} and {@code sequential} (e.g.: 2024/23).
      */
-    @Column(name = "LENDING_NUMBER", length = 32)
+    //@Column(name = "LENDING_NUMBER", length = 32)
     @NotNull
     @NotBlank
     @Size(min = 6, max = 32)

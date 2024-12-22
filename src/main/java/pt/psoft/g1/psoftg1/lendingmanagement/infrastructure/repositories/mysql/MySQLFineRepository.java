@@ -8,7 +8,7 @@ import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.e
 import java.util.Optional;
 
 //@Repository
-@Profile("mysql")
+//@Profile("!mysql")
 public interface MySQLFineRepository extends JpaRepository<FineEntity, Long> {
 
     @Query("SELECT f " +

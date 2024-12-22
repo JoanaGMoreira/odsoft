@@ -20,8 +20,7 @@ import pt.psoft.g1.psoftg1.usermanagement.model.User;
  * Based on https://github.com/Yoh0xFF/java-spring-security-example
  *
  */
-@CacheConfig(cacheNames = "users")
-@Profile("mysql")
+
 public interface MysqlUserRepository extends JpaRepository<UserEntity, Long> {
 
 	@Override
@@ -55,9 +54,9 @@ public interface MysqlUserRepository extends JpaRepository<UserEntity, Long> {
 	}
 
 	@Cacheable
-	@Query("SELECT u " +
-			"FROM UserEntity u " +
-			"WHERE u.username LIKE :username")
+//	@Query("SELECT u " +
+//			"FROM UserEntity u " +
+//			"WHERE u.username LIKE :username")
 	Optional<UserEntity> findByUsername(String username);
 
 	@Cacheable

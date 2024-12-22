@@ -9,7 +9,7 @@ import pt.psoft.g1.psoftg1.lendingmanagement.infrastructure.repositories.mysql.e
 import java.util.*;
 
 //@Repository
-@Profile("mysql")
+//@Profile("!mysql")
 public interface MySQLLendingRepository extends JpaRepository<LendingEntity, Long> {
 
     @Query("SELECT l " +

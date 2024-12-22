@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "author")
+@Table(name = "photo")
 public class PhotoEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

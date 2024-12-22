@@ -38,7 +38,7 @@ import java.util.Objects;
 @Tag(name = "Lendings", description = "Endpoints for managing Lendings")
 @RestController
 @RequestMapping("/api/lendings")
-@Profile("!mysql")
+@Profile("h2")
 public class LendingController {
     private final LendingService lendingService;
     private final ReaderService readerService;

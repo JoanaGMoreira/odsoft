@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Repository
+@Profile("h2")
 class GenreRepoCustomImpl implements GenreRepository {
 
     private final EntityManager entityManager;

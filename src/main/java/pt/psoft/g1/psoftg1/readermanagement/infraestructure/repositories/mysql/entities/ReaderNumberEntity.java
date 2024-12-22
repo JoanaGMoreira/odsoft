@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Embeddable
 @Getter @Setter
 public class ReaderNumberEntity implements Serializable {
-    @Column(name = "READER_NUMBER")
+    //@Column(name = "READER_NUMBER")
     private String readerNumber;
 
     public ReaderNumberEntity() {}

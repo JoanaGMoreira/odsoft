@@ -15,7 +15,7 @@ import pt.psoft.g1.psoftg1.shared.services.SearchRequest;
 @Tag(name = "Genres", description = "Endpoints for managing Genres")
 @RestController
 @RequestMapping("/api/genres")
-@Profile("!mysql")
+@Profile("h2")
 public class GenreController {
     private final GenreService genreService;
     private final GenreViewMapper genreViewMapper;

@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Books", description = "Endpoints for managing Books")
 @RestController
 @RequestMapping("/api/books")
-@Profile("!mysql")
+@Profile("h2")
 public class BookController {
     private final BookService bookService;
     private final LendingService lendingService;

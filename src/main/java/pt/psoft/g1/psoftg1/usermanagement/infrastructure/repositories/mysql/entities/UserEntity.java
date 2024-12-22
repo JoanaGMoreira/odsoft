@@ -28,10 +28,10 @@ public class UserEntity {
 
     // database primary key
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
-    @Column(name="USER_ID")
+    //@Column(name="USER_ID")
     private Long id;
 
     // optimistic lock concurrency control

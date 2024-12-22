@@ -15,7 +15,7 @@ import lombok.Setter;
 public class IsbnEntity {
 
     @Size(min = 10, max = 13)
-    @Column(name="ISBN", length = 16)
+    @Column(length = 16)
     private String isbn;
 
     public IsbnEntity() {};

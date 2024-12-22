@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Profile("h2")
 class LendingRepoCustomImpl implements LendingRepository {
     // get the underlying JPA Entity Manager via spring thru constructor dependency
     // injection

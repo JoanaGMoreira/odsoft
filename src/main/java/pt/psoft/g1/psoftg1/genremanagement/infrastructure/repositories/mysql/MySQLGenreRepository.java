@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.*;
 
 //@Repository
-@Profile("mysql")
+//@Profile("mysql")
 public interface MySQLGenreRepository extends JpaRepository<GenreEntity, Integer> {
 
     @Query("SELECT g FROM GenreEntity g")

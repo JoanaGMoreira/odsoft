@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 //@Repository
-@Profile("mysql")
+@Profile("h2")
 public interface MysqlReaderRepository extends  JpaRepository<ReaderDetailsEntity, Long> {
     @Query("SELECT r " +
             "FROM ReaderDetailsEntity r " +

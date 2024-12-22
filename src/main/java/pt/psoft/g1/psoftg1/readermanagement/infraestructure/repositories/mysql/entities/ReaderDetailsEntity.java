@@ -14,6 +14,7 @@ import java.util.List;
 public class ReaderDetailsEntity extends MySQLEntityWithPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long pk;
 
     @Getter

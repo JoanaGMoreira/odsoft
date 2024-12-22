@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("mysql")
+@Profile("h2")
 public interface MysqlForbiddenNameRepository extends JpaRepository<ForbiddenNameEntity, Long>  {
 
     @Query("SELECT fn FROM ForbiddenNameEntity fn " +
