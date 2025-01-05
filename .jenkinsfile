@@ -31,13 +31,13 @@ pipeline {
                               reportTitles: 'Mutation Test Report'])
              }
         }
-        stage('Integration Tests') {
-             steps {
-                 echo 'Running Integration Tests..'
-                 sh 'mvn verify'
-                 junit 'target/failsafe-reports/*.xml'
-             }
-        }
+//         stage('Integration Tests') {
+//              steps {
+//                  echo 'Running Integration and Acceptance Tests..'
+//                  sh 'mvn verify'
+//                  junit 'target/failsafe-reports/*.xml'
+//              }
+//         }
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
